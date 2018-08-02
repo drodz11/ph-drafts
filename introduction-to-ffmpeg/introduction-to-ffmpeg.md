@@ -31,7 +31,7 @@ there are some helpful guides and resources available for installing the framewo
 The simplest option is to use a package manager such as [Homebrew](https://brew.sh/)
 to install FFmpeg and ensure it remains in the most up-to-date version. To complete this kind of installation, follow these steps:
 * Install Homebrew following the instructions on the website
-* Run `brew install ffmpeg` in your [Terminal](https://en.wikipedia.org/wiki/Terminal_(macOS) to initiate a basic installation.
+* Run `brew install ffmpeg` in your [Terminal](https://en.wikipedia.org/wiki/Terminal_(macOS)) to initiate a basic installation.
     * **Note**: Generally, it is recommended to install FFMpeg with additional features than what is included in the basic installation. Including additional options will provide access to more of FFmpeg's tools and functionalities. Reto Kromer's [Apple installation guide](https://avpres.net/FFmpeg/install_Apple.html) provides a good set of additional options:
     `brew install ffmpeg --with-sdl2 --with-freetype --with-openjpeg --with-x265 --with-rubberband --with-tesseract`
     * For an explanation of these additional options, refer to [Ashley Blewer's FFmpeg guide](https://training.ashleyblewer.com/presentations/ffmpeg.html#10)
@@ -198,7 +198,7 @@ In this command, using `-t 30` will create a 30 second excerpt starting at timec
 For more information on this command, see Reto Kromer's [explanation](https://avpres.net/FFmpeg/probe_json.html)
 
 ## Using FFplay (File playback)
-`FFplay` is useful for testing and playing back new files created using `ffmpeg` commands or as a simple media player. As we also see, `ffplay` can be used to playback files with specific parameters and filters. To play a file, simply run:
+`FFplay` is useful for testing and playing back new files created using `ffmpeg` commands or as a simple media player. As we will also see, `ffplay` can be used to playback files with specific parameters and filters. To play a file, simply run:
 
 `ffplay input_file.ext`
 
