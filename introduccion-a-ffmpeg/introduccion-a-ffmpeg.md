@@ -213,7 +213,7 @@ Para reproducir un vídeo con un vectorscopio:
 
 * `ffplay` = comienza el comando
 * `-i entrada_archivo.ext` = la ruta y el nombre del archivo de entrada
-* `-vf` = crea un *filter-graph* para usar con las pistas
+* `-vf` = crea un [*filter-graph*](https://trac.ffmpeg.org/wiki/FilteringGuide) para usar con las pistas
 * `"` = una comilla comienzo el *filter-graph.* La información entre las comillas
  especifica los parámetros de la apariencia y posición del vectorscopio
 * `split=2[m][v]` = divide la entrada en dos salidas idénticas llamadas `[m]` y `[v]`
