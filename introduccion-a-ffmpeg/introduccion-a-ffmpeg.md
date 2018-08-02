@@ -268,7 +268,7 @@ FFmpeg tiene una comunidad grande y bien apoyada de usarios a través de todo el
 * [FFmpeg Wiki](https://trac.ffmpeg.org/wiki/WikiStart)
 * [ffmprovisr de Association of Moving Image Archists](https://amiaopensource.github.io/ffmprovisr/)
 * [Entrenamiento de Preservación Audiovisual de Ashley Blewer](https://training.ashleyblewer.com/)
-* La Presentación de Andrew Weaver[Demystifying FFmpeg](https://github.com/privatezero/NDSR/blob/master/Demystifying_FFmpeg_Slides.pdf)
+* [La Presentación de Andrew Weaver - Demystifying FFmpeg](https://github.com/privatezero/NDSR/blob/master/Demystifying_FFmpeg_Slides.pdf)
 * [FFmpeg Presentación de Ben Turkus](https://docs.google.com/presentation/d/1NuusF948E6-gNTN04Lj0YHcVV9-30PTvkh_7mqyPPv4/present?ueb=true&slide=id.g2974defaca_0_231)
 * [FFmpeg Cookbook for Archivists de Reto Kromer](https://avpres.net/FFmpeg/)
 
