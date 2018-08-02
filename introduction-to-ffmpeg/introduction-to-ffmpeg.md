@@ -220,7 +220,7 @@ To play a video accompanied by a vectorscope:
 
 * `ffplay` = starts the command
 * `input_file.ext` = path and name of input file
-* `-vf` = creates a filter-graph to use for the streams
+* `-vf` = creates a [filter-graph](https://trac.ffmpeg.org/wiki/FilteringGuide) to use for the streams
 * `"` = quotation mark to start the filter-graph. Information inside the quotation marks will specify the parameters of the vectorscope's appearance and position.
 * `split=2[m][v]` = splits the input into two identical outputs called `[m]` and `[v]`
 * `,` = comma signifies another parameter is coming
@@ -260,8 +260,7 @@ This command will output a video file that displays the audio waveform in real-t
 * `-filter_complex` = creates a complex filter-graph
 * `"` = quotation mark to start the filter-graph. Information inside the quotation
 marks will specify the parameters of the waveform's appearance and size.
-* `[0:a]showwaves=s=1280x720` = activates the `showwaves` filter and sets it to a certain size. This will be
-the size of the output video.
+* `[0:a]showwaves=s=1280x720` = activates the `showwaves` filter and sets it to a certain size. This will be the size of the output video.
 * `:mode=line,format=yuv420p[v]` = specifies what style of graph will be created in addition to the colorspace `yuv` and resolution `420p`
 * `"` = ends the filter-graph
 * `-map "[v]" -map 0:a` = maps the output of the filter-graph onto the output file
