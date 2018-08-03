@@ -307,4 +307,4 @@ FFmpeg has a large and well-supported community of users across the globe. As su
 
 Dave Rodriguez is an audiovisual archivist and filmmaker. He is currently a Resident Librarian at Florida State University.
 
-# This tutorial was made possible with the support of the British Academy and written during the Programming Historian Workshop at La Universidad de Los Andes in Bogotá, Colombia, 31 July - 3 August, 2018.
+### This tutorial was made possible with the support of the British Academy and written during the Programming Historian Workshop at La Universidad de Los Andes in Bogotá, Colombia, 31 July - 3 August, 2018.
