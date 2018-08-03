@@ -13,11 +13,11 @@ layout: lesson
 
 # Introducción
 Historicamente, las Humanidades Digitales, como una disciplina, se han enfocado casi exclusivamente en el analisis de fuentes textuales a través de métodos computacionales (Hockey, 2004). Sin embargo, hay un interés creciente en el campo de la utilización de métodos computacionales para el analisis de materiales audiovisuales de herencia cultural como se indica por la creación de el [Alianza de Organizaciones de Humanidades Digitales Grupo de Interés Especial:
-Materiales audiovisuales en Humanidades Digitales](https://avindhsig.wordpress.com/) y el [el aumento de las presentaciones relacionadas con temas audiovisuales en la conferencia global de AOHD](https://figshare.com/articles/AV_in_DH_State_of_the_Field/5680114) en los años pasados. Como estados Erik Champion, "La audiencia de HD no siempre está enfocada en la literatura o está interesada en las formas tradicionales de alfabetización" y la aplicación de metodologías digitales para estudiar cultura audiovisual es un emocionante y emergente faceta de Humanidades Digitales (Champion, 2017). Hay muchos valoroso, gratuita, y código abierto herramientas y recursos disponibles para aquellos interesados en trabajar con materiales audiovisuales (por ejemplo, el Programming Historian tutorial [Editar Audio con Audacity](https://programminghistorian.org/es/lecciones/editar-audio-con-audacity)) y este tutorial presentará otro: FFmpeg.
+Materiales audiovisuales en Humanidades Digitales](https://avindhsig.wordpress.com/) y el [el aumento de las presentaciones relacionadas con temas audiovisuales en la conferencia global de AOHD](https://figshare.com/articles/AV_in_DH_State_of_the_Field/5680114) en los años pasados. Como estados Erik Champion, "La audiencia de HD no siempre está enfocada en la literatura o está interesada en las formas tradicionales de alfabetización" y la aplicación de metodologías digitales para estudiar cultura audiovisual es un emocionante y emergente faceta de las Humanidades Digitales (Champion, 2017). Hay muchos valoroso, gratuita, y código abierto herramientas y recursos disponibles para aquellos interesados en trabajar con materiales audiovisuales (por ejemplo, el tutorial de Programming Historian [Editar Audio con Audacity](https://programminghistorian.org/es/lecciones/editar-audio-con-audacity)) y este tutorial presentará otro: FFmpeg.
 
 [FFmpeg](https://www.ffmpeg.org/) es el marco multimedia de código abierto líder para transcodificar, editar, filtrar, y reproducir casi cualquier tipo de formato audiovisual digital. Muchos programs comunes y sitios web usan FFmpeg para leer y escribir archivos audiovisuales incluso VLC, Google Chrome, YouTube y [muchos más](https://trac.ffmpeg.org/wiki/Projects). Además de ser una herramienta de software y desarrollo de Internet, FFmpeg se puede usar en la interfaz de línea de comandos para realizar muchas tareas comúnes, complejas, e importantes relacionadas con la preservación, reproducción de archivos, y visualización y recuperación de metadatos. Como tal, FFmpeg es una herramienta increíblemente valiosa para los humanistas digitales que trabajan con datos audiovisuales. El conocimiento del marco permite a los investigadores manipular materiales audiovisuales para satisfacer sus necesidades con una solución gratuita de código abierto con mucha de la misma funcionalidad que los costosos software de audio y vídeo.
 
-Aunque es útil tener cierta familiaridad con las herramientas de Bash, la interfaz de línea de comandos, o otros lenguajes de programación, este conocimiento previo no es critico. Si le interesa aprender más sobre estas habilidades, revise [Introducción a la línea de comandos en Bash](https://programminghistorian.org/es/lecciones/introduccion-a-bash) o [Introducción a la línea de comandos de Windows con PowerShell](https://programminghistorian.org/es/lecciones/introduccion-a-powershell). Adicionalmente, una entendimiento básica de [contenedores](https://es.wikipedia.org/wiki/Formato_contenedor) y [códecs](https://es.wikipedia.org/wiki/C%C3%B3dec) audiovisuales también será útil para entender qué hace FFmpeg y cómo funciona.
+Aunque es útil tener cierta familiaridad con las herramientas de Bash, la interfaz de línea de comandos, o otros lenguajes de programación a aprender los básicos de FFmpeg, este conocimiento previo no es critico. Si le interesa aprender más sobre estas habilidades, revise [Introducción a la línea de comandos en Bash](https://programminghistorian.org/es/lecciones/introduccion-a-bash) o [Introducción a la línea de comandos de Windows con PowerShell](https://programminghistorian.org/es/lecciones/introduccion-a-powershell). Adicionalmente, una entendimiento básica de [contenedores](https://es.wikipedia.org/wiki/Formato_contenedor) y [códecs](https://es.wikipedia.org/wiki/C%C3%B3dec) audiovisuales también será útil para entender qué hace FFmpeg y cómo funciona.
 
 # Objectivos de aprendizaje
 * Aprender a instalar FFmpeg en su computadora o usar una versión en el navegador de Internet
@@ -28,13 +28,13 @@ Aunque es útil tener cierta familiaridad con las herramientas de Bash, la inter
 # Cómo instalar FFmpeg
 La instalación de FFmpeg es posiblemente la parte más difícil de usar FFmpeg. Felizmente, hay algunas guías útiles y recursos disponibles para instalar el marco para cada tipo de sistema operativo.
 
-* **Nota**: Nuevas versiones de FFmpeg son lanzadas aproximadamente cada seis meses. Para mantenerse al tanto de las nuevas versiones, siga FFmpeg en [Twitter](https://twitter.com/FFmpeg) o en [el sitio web](https://www.ffmpeg.org/index.html#news)
+* **Note**: Nuevas versiones de FFmpeg son lanzadas aproximadamente cada seis meses. Para mantenerse al tanto de las nuevas versiones, siga FFmpeg en [Twitter](https://twitter.com/FFmpeg) o en [el sitio web](https://www.ffmpeg.org/index.html#news)
 
 ## Para usuarios de Mac OS
 La opción más simple es usar un administrador de paquetes como [Homebrew](https://brew.sh/) para instalar FFmpeg y asegurar que permanezca en la versión más reciente. Para completar este tipo de instalación, siga estos pasos:
 * Instale Homebrew de acuerdo a las instrucctiones en el sitio web
 * Ejecute `brew install ffmpeg` en su [Terminal](https://es.wikipedia.org/wiki/Terminal_(OS_X)) para comenzar una instalación básica
-  * **Nota**: Generalmente, es recomendado instalar FFmpeg con opciones adicionales a las incluidas en la instalación básica. Incluir opciones adicionales proporcionará accesso a más herramientas y funcionalidades de FFmpeg. [La Guía de Instalación de Apple de Reto Kromer](https://avpres.net/FFmpeg/install_Apple.html) proporciona un buen conjunto de opciones adicionales:
+  * **Note**: Generalmente, es recomendado instalar FFmpeg con opciones adicionales a las incluidas en la instalación básica. Incluir opciones adicionales proporcionará accesso a más herramientas y funcionalidades de FFmpeg. [La Guía de Instalación de Apple de Reto Kromer](https://avpres.net/FFmpeg/install_Apple.html) proporciona un buen conjunto de opciones adicionales:
   `brew install ffmpeg --with-sdl2 --with-freetype --with-openjpeg --with-x265 --with-rubberband --with-tesseract`
   * Para una explicación de estas opciones adicionales, revise [La Guía FFmpeg de Ashley Blewer](https://training.ashleyblewer.com/presentations/ffmpeg.html#10).
 * Para actualizar su instalación a la versión más reciente, ejecute:
@@ -73,9 +73,9 @@ libpostproc 54. 7.100 / 54. 7.100`
 * Si ve algo como `-bash: ffmpeg: command not found`, algo ha ido mal.
 
 ## Usando FFmpeg en El Navegador de Internet
-Si no quiere instalar FFmepg en su compudatora pero le gustaría familiarizarse con el marco y usarlo en la interfaz de línea de comandos, [vídeoconverter.js](https://bgrins.github.io/videoconverter.js/demo/)
+Si no quiere instalar FFmepg en su compudatora pero le gustaría familiarizarse con el marco y usarlo en la interfaz de línea de comandos, [vídeoconverter.js](https://bgrins.github.io/videoconverter.js/demo/) de Brian Grinstead
 proporciona un método para ejecutar los comandos FFmpeg en su navegador de Internet.
-  **Nota**: Este recurso opera en una versión más vieja de FFmpeg y posiblemente no tenga todas las características de la versión más reciente.
+  **Note**: Este recurso opera en una versión más vieja de FFmpeg y posiblemente no tenga todas las características de la versión más reciente.
 
 # La Estructura Básica y Sintaxis de Los Comandos FFmpeg
 El comando básico tiene cuatro partes:
@@ -145,7 +145,7 @@ Para crear un nuevo archivo de vídeo (sin audio):
 * `-an` = le dice a FFmpeg que ignore la pista de audio
 * `salida_archivo.ext` = la ruta y el nombre del archivo de salida
 
-Nota que necesita especificar la extensión correcta dependiendo en el tipo del archivo de salida está creando, sin embargo el contenedor `.mp4` puede ser y se usa comúnmente para audio o video.
+Note que necesita especificar la extensión correcta dependiendo en el tipo del archivo de salida está creando, sin embargo el contenedor `.mp4` puede ser y se usa comúnmente para audio o video.
 
 ## Recortar Archivos
 Comparablemente, puedes crear un extracto de un archivo para análisis o investigación más enfocado. Hay varios métodos para hacer esto, y los siguientes ejemplos proporcionan usas diferentes del syntaxis de FFmpeg para crear extractos.
@@ -219,10 +219,21 @@ Para reproducir un vídeo con un vectorscopio:
 * `split=2[m][v]` = divide la entrada en dos salidas idénticas llamadas `[m]` y `[v]`
 * `,` = la coma indica que un otro parámetro es próximo
 * `[v]vectorscope=b=0.7:m=color3:g=green[v]` = asigna la salida `[v]` al filtro del vectorscopio
-* `[m][v]overlay=x=W-w:y=H-h` = superpone el vectorscopio encima de la imagen de vídeo en una cierta ubicación
+* `[m][v]overlay=x=W-w:y=H-h` = superpone el vectorscopio encima de la imagen de vídeo en una cierta ubicación (en este caso, en la esquina inferior derecha de la pantalla)
 * `"` = termina el *filter-graph*
 
 {% include figure.html filename="vectorscope.png" caption="Un marco de video de muestra con un vectorscopio" %}
+
+Como se discutió previamente, este comando de `ffplay` reproduce el archivo una vez y luego cierra la ventana de comando. Puede agregar una opción de `-loop`, pero es probable que desee crear un nuevo archivo con el vectorscopio incluido en la imagen para su posterior análisis e investigación. Para lograr esto, necesitamos cambiar el símbolo del sistema a `ffmpeg` y especificar los parámetros del archivo de salida. Nuesto nuevo commando se parece a esto:
+
+`ffmpeg -i entrada_archivo.ext -vf "split=2[m][v], [v]vectorscope=b=0.7:m=color3:g=green[v],[m][v]overlay=x=W-w:y=H-h" -c:v libx264 -c:a copy salida_archivo.ext`
+
+Note los pequeños pero importantes cambios en syntaxis:
+  * Nosotros hemos agregado una bandera de `-i` porque es un commando de `ffmpeg`
+  * Nosotros hemos especificado el códec del vídeo del archivo del salida como [H.264](https://es.wikipedia.org/wiki/H.264/MPEG-4_AVC) con la bandera `-c:v libx264` y no estamos recodificando el códec de audio (`-c:a copy`), aunque puede especificar un otro códec de audio si necesita.
+  * Nosotros hemos especificado la ruta y el nombre del `salida_archivo.ext`
+
+Generalmente, los commandos de `ffplay` pueden reescribir como los commandos de `ffmpeg` con similares ajustes a syntaxis, pero los commandos que contienen opciones más complejas puede requerir ajustes más significativos.
 
 ### Forma de Onda (Audio)
 Para crear una forma de onda de una sola imagen de un solo canal (mono):
@@ -266,7 +277,7 @@ FFmpeg tiene una comunidad grande y bien apoyada de usarios a través de todo el
 
 * [La Documentación Oficial de FFmpeg](https://www.ffmpeg.org/ffmpeg.html)
 * [FFmpeg Wiki](https://trac.ffmpeg.org/wiki/WikiStart)
-* [ffmprovisr de Association of Moving Image Archists](https://amiaopensource.github.io/ffmprovisr/)
+* [ffmprovisr](https://amiaopensource.github.io/ffmprovisr/) de [La Asociación de Archivistas de Imágenes en Movimiento](https://amianet.org/sobre-amia/resumen/?lang=es)
 * [Entrenamiento de Preservación Audiovisual de Ashley Blewer](https://training.ashleyblewer.com/)
 * [La Presentación de Andrew Weaver - Demystifying FFmpeg](https://github.com/privatezero/NDSR/blob/master/Demystifying_FFmpeg_Slides.pdf)
 * [FFmpeg Presentación de Ben Turkus](https://docs.google.com/presentation/d/1NuusF948E6-gNTN04Lj0YHcVV9-30PTvkh_7mqyPPv4/present?ueb=true&slide=id.g2974defaca_0_231)

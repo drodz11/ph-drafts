@@ -13,7 +13,7 @@ Historically, the Digital Humanities, as a discipline, have been focused almost 
 
 [FFmpeg](https://www.ffmpeg.org/) is the leading open-source multimedia framework for transcoding, editing, filtering, and playing nearly every kind of digital audio-visual format. Many common software applications and websites use FFmpeg to handle reading and writing audio-visual files, including VLC, Google Chrome, YouTube, [and many more.](https://trac.ffmpeg.org/wiki/Projects) In addition to being a software and web-developer tool, FFmpeg can be used at the command-line to perform many common, complex, and important tasks related to preservation, playback, and data visualization and retrieval. As such, FFmpeg is an incredibly valuable tool for digital humanists working with audio-visual data. Knowledge of the framework empowers researchers to manipulate audio-visual materials to meet their needs with a free, open-source solution that carries much of the functionality of expensive audio and video editing software.
 
-Although it is helpful have some familiarity with Bash scripting, other programming languages, and/or command-line tools to use FFmpeg, this prior knowledge is by no means necessary. If you are interested in learning more about these skills, check out the [Bash tutorial](https://programminghistorian.org/en/lessons/intro-to-bash) (Mac and Linux users) or the [Windows PowerShell tutorial](https://programminghistorian.org/en/lessons/intro-to-powershell#quick-reference). Additionally, a basic understanding of audiovisual [codecs](https://en.wikipedia.org/wiki/Codec) and [containers](https://en.wikipedia.org/wiki/Digital_container_format) will also be useful to understanding what FFmpeg does and how it works.
+Although it is helpful have some familiarity with Bash scripting, other programming languages, and/or command-line tools to learn the basics of FFmpeg, this prior knowledge is by no means necessary. If you are interested in learning more about these skills, check out the [Bash tutorial](https://programminghistorian.org/en/lessons/intro-to-bash) (Mac and Linux users) or the [Windows PowerShell tutorial](https://programminghistorian.org/en/lessons/intro-to-powershell#quick-reference). Additionally, a basic understanding of audiovisual [codecs](https://en.wikipedia.org/wiki/Codec) and [containers](https://en.wikipedia.org/wiki/Digital_container_format) will also be useful to understanding what FFmpeg does and how it works.
 
 ## Learning Objectives
 * Learn how to install FFmpeg on your computer or use a demo version in your web browser
@@ -75,7 +75,7 @@ libpostproc 54. 7.100 / 54. 7.100`
 gone wrong.
 
 ## Using FFmpeg in a web browser (without installing)
-If you do not want to install FFmpeg on your computer but would like to become familiar with using it at the command-line, [videoconverter.js](https://bgrins.github.io/videoconverter.js/demo/) provides a way to run FFmpeg commands and learn its basic functions in the web-browser of your choice.
+If you do not want to install FFmpeg on your computer but would like to become familiar with using it at the command-line, Brian Grinstead's [videoconverter.js](https://bgrins.github.io/videoconverter.js/demo/) provides a way to run FFmpeg commands and learn its basic functions in the web-browser of your choice.
   **Note**: This resource runs on an older version of FFmpeg and may not contain all the features of the most recent version.
 
 # Basic Structure and Syntax of FFmpeg commands
@@ -225,10 +225,21 @@ To play a video accompanied by a vectorscope:
 * `split=2[m][v]` = splits the input into two identical outputs called `[m]` and `[v]`
 * `,` = comma signifies another parameter is coming
 * `[v]vectorscope=b=0.7:m=color3:g=green[v]` = assigns the `[v]` output the vectorscope filter
-* `[m][v]overlay=x=W-w:y=H-h` = overlays the vectorscope on top of the video image in a certain location
+* `[m][v]overlay=x=W-w:y=H-h` = overlays the vectorscope on top of the video image in a certain location (in this case, in the lower right corner of the frame)
 * `"` = ends the filter-graph
 
 {% include figure.html filename="vectorscope.png" caption="A sample video frame with a vectorscope" %}
+
+As previously discussed, this `ffplay` command will playback the video one time and then close the window. You can add a `-loop` option, but it is likely that you'll want to create a new file with the vectorscope included in the image for later analysis and investigation. To accomplish this, we need to change the command prompt to `ffmpeg` and specify the parameters of the output file. Our new command looks like this:
+
+`ffmpeg -i input_file.ext -vf "split=2[m][v], [v]vectorscope=b=0.7:m=color3:g=green[v],[m][v]overlay=x=W-w:y=H-h" -c:v libx264 -c:a copy output_file.ext`
+
+Note the slight but important changes in syntax:
+  * We have added an `-i` flag because it is an `ffmpeg` command
+  * We have specified the output video codec as [H.264](https://en.wikipedia.org/wiki/H.264/MPEG-4_AVC) with the flag `-c:v libx264` and are not re-encoding the audio (`-c:a copy`), although you can specify another audio codec here if necessary.
+  * We have specified the path and name of the `output_file.ext`
+
+Generally, `ffplay` commands can be re-written as `ffmpeg` commands with similar tweaks to syntax, although commands containing more complex options may require more significant adjustments.
 
 ### Waveform (Audio)
 To create a single image of a single-channel (mono) waveform from an input file:
@@ -245,8 +256,7 @@ marks will specify the parameters of the waveform's appearance and size.
 of the image to be 600 pixels wide and 240 pixels tall.
 * `"` = ends the filter-graph
 * `frames:v 1` = assigns the output to one single frame (one image)  
-* `output_file.ext` = path and name of output file. The extension should be an appropriate
-image format such as `.jpeg` or `.png`
+* `output_file.ext` = path and name of output file. The extension should be an appropriate image format such as `.jpeg` or `.png`
 
 {% include figure.html filename="waveform-image.png" caption="Waveform image output of the above command" %}
 
@@ -275,7 +285,7 @@ FFmpeg has a large and well-supported community of users across the globe. As su
 
 * The Official [FFmpeg Documentation](https://www.ffmpeg.org/ffmpeg.html)
 * [FFmpeg Wiki](https://trac.ffmpeg.org/wiki/WikiStart)
-* Association of Moving Image Archists' [ffmprovisr](https://amiaopensource.github.io/ffmprovisr/)
+* [ffmprovisr](https://amiaopensource.github.io/ffmprovisr/) from the [Association of Moving Image Archivists](https://amianet.org/)
 * Ashley Blewer's [Audiovisual Preservation Training](https://training.ashleyblewer.com/)
 * Andrew Weaver's [Demystifying FFmpeg](https://github.com/privatezero/NDSR/blob/master/Demystifying_FFmpeg_Slides.pdf)
 * Ben Turkus' [FFmpeg Presentation](https://docs.google.com/presentation/d/1NuusF948E6-gNTN04Lj0YHcVV9-30PTvkh_7mqyPPv4/present?ueb=true&slide=id.g2974defaca_0_231)
