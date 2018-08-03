@@ -1,6 +1,6 @@
 ---
 title: |
-    Introduction to FFmpeg
+    Introduction to Audiovisual Transcoding, Editing, and Data Visualization with FFmpeg
 authors:
 - David Rodriguez
 date: 2018-08-02
@@ -301,3 +301,6 @@ FFmpeg has a large and well-supported community of users across the globe. As su
 * Champion, E. (2017) “Digital Humanities is text heavy, visualization light, and simulation poor,” Digital Scholarship in the Humanities 32(S1), i25-i32
 
 * Hockey, S. (2004) “The History of Humanities Computing,” A Companion to Digital Humanities, ed. Susan Schreibman, Ray Siemens, John Unsworth. Oxford: Blackwell
+
+
+# This tutorial was made possible with the support of the British Academy and written during the Programming Historian Workshop at La Universidad de Los Andes in Bogotá, Colombia, July 31 - August 3, 2018.
