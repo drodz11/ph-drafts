@@ -16,9 +16,10 @@ Historicamente, las Humanidades Digitales, como una disciplina, se han enfocado 
 
 [FFmpeg](https://www.ffmpeg.org/) es el marco multimedia de código abierto líder para transcodificar, editar, filtrar, y reproducir casi cualquier tipo de formato audiovisual digital. Muchos programs comunes y sitios web usan FFmpeg para leer y escribir archivos audiovisuales incluso VLC, Google Chrome, YouTube y [muchos más](https://trac.ffmpeg.org/wiki/Projects). Además de ser una herramienta de software y desarrollo de Internet, FFmpeg se puede usar en la interfaz de línea de comandos para realizar muchas tareas comúnes, complejas, e importantes relacionadas con la preservación, reproducción de archivos, y visualización y recuperación de metadatos. Como tal, FFmpeg es una herramienta increíblemente valiosa para los humanistas digitales que trabajan con datos audiovisuales. El conocimiento del marco permite a los investigadores manipular materiales audiovisuales para satisfacer sus necesidades con una solución gratuita de código abierto con mucha de la misma funcionalidad que los costosos software de audio y vídeo.
 
-Aunque es útil tener cierta familiaridad con las herramientas de Bash, la interfaz de línea de comandos, o otros lenguajes de programación a aprender los básicos de FFmpeg, este conocimiento previo no es critico. Si le interesa aprender más sobre estas habilidades, revise [Introducción a la línea de comandos en Bash](https://programminghistorian.org/es/lecciones/introduccion-a-bash) o [Introducción a la línea de comandos de Windows con PowerShell](https://programminghistorian.org/es/lecciones/introduccion-a-powershell). Adicionalmente, una entendimiento básica de [contenedores](https://es.wikipedia.org/wiki/Formato_contenedor) y [códecs](https://es.wikipedia.org/wiki/C%C3%B3dec) audiovisuales también será útil para entender qué hace FFmpeg y cómo funciona.
+## Requisitos previos
+Aunque es útil tener cierta familiaridad con las herramientas de Bash, la interfaz de línea de comandos, o otros lenguajes de programación a aprender los básicos de FFmpeg, este conocimiento previo no es critico. Sin embargo, necesitarás poder acceder a su [Terminal](https://es.wikipedia.org/wiki/Terminal_(OS_X) o otra interfaz de línea de comandos en su computadora. Si le interesa aprender más sobre estas habilidades, revise [Introducción a la línea de comandos en Bash](https://programminghistorian.org/es/lecciones/introduccion-a-bash) o [Introducción a la línea de comandos de Windows con PowerShell](https://programminghistorian.org/es/lecciones/introduccion-a-powershell). Adicionalmente, una entendimiento básica de [contenedores](https://es.wikipedia.org/wiki/Formato_contenedor) y [códecs](https://es.wikipedia.org/wiki/C%C3%B3dec) audiovisuales también será útil para entender qué hace FFmpeg y cómo funciona.
 
-# Objectivos de aprendizaje
+## Objectivos de aprendizaje
 * Aprender a instalar FFmpeg en su computadora o usar una versión en el navegador de Internet
 * Comprender la estructura básica y sintaxis de los comandos de FFmpeg
 * Aprender varios comandos útiles
@@ -32,7 +33,7 @@ La instalación de FFmpeg es posiblemente la parte más difícil de usar FFmpeg.
 ## Para usuarios de Mac OS
 La opción más simple es usar un administrador de paquetes como [Homebrew](https://brew.sh/) para instalar FFmpeg y asegurar que permanezca en la versión más reciente. Para completar este tipo de instalación, siga estos pasos:
 * Instale Homebrew de acuerdo a las instrucctiones en el sitio web
-* Ejecute `brew install ffmpeg` en su [Terminal](https://es.wikipedia.org/wiki/Terminal_(OS_X)) para comenzar una instalación básica
+* Ejecute `brew install ffmpeg` en su Terminal para comenzar una instalación básica
   * **Note**: Generalmente, es recomendado instalar FFmpeg con opciones adicionales a las incluidas en la instalación básica. Incluir opciones adicionales proporcionará accesso a más herramientas y funcionalidades de FFmpeg. [La Guía de Instalación de Apple de Reto Kromer](https://avpres.net/FFmpeg/install_Apple.html) proporciona un buen conjunto de opciones adicionales:
   `brew install ffmpeg --with-sdl2 --with-freetype --with-openjpeg --with-x265 --with-rubberband --with-tesseract`
   * Para una explicación de estas opciones adicionales, revise [La Guía FFmpeg de Ashley Blewer](https://training.ashleyblewer.com/presentations/ffmpeg.html#10).
@@ -117,8 +118,8 @@ En este ejemplo, recodificamos (transcodificar) un nuevo archivo de salida a una
 * `-i entrada_archivo.ext` = la ruta y el nombre del archivo de entrada
 * `-c:v prores` = copia la pista de vídeo a ProRes 422
 * `-profile:v 1` = indica el perfil LT de ProRes. Más sobre [los perfiles de ProRes](https://documentation.apple.com/en/finalcutpro/professionalformatsandworkflows/index.html#chapter=10%26section=2)
-* `-c:a aac` = copia el códec de audio a AAC
-* `-vf yadif` = usa el filtro de vídeo "yadif" para desentrelazar la imagen
+* `-c:a aac` = copia el códec de audio a [AAC](https://es.wikipedia.org/wiki/Advanced_Audio_Coding)
+* `-vf yadif` = usa el filtro de vídeo "yadif" para [desentrelazar](https://en.wikipedia.org/wiki/Deinterlacing) la imagen
 * `salida_archivo.mov` = la ruta y el nombre del archivo de salida. Note que aquí es donde se define el nuevo contenedor
 
 ## Demux Audio y Vídeo (Separar audio y vídeo en diferents archivos)
@@ -292,5 +293,9 @@ FFmpeg tiene una comunidad grande y bien apoyada de usarios a través de todo el
 * Champion, E. (2017) “Digital Humanities is text heavy, visualization light, and simulation poor,” Digital Scholarship in the Humanities 32(S1), i25-i32
 
 * Hockey, S. (2004) “The History of Humanities Computing,” A Companion to Digital Humanities, ed. Susan Schreibman, Ray Siemens, John Unsworth. Oxford: Blackwell
+
+# Acerca del autor
+
+Dave Rodriguez es un archivista audiovisual y cienasta. Actualmente es un Bibliotecario Residente en Florida State University.
 
 # Este tutorial fue posible con el apoyo de la Academia Británica y fue escrito durante el Taller de Programming Historian en La Universidad de Los Andes en Bogotá, Colombia, del 31 de julio al 3 de agosto de 2018.

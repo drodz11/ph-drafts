@@ -3,17 +3,18 @@ title: |
     Introduction to Audiovisual Transcoding, Editing, and Data Visualization with FFmpeg
 authors:
 - David Rodriguez
-date: 2018-08-02
+date: 2018-08-03
 reviewers:
 layout: lesson
 ---
 
 # Introduction
-Historically, the Digital Humanities, as a discipline, have been focused almost exclusively on the analysis of textual sources through computational methods (Hockey, 2004). However, there is growing interest in the field around using computational methods for the analysis of audiovisual cultural heritage materials as indicated by the creation of the [Alliance of Digital Humanities Organizations Special Interest Group: Audiovisual Materials in the Digital Humanites](https://avindhsig.wordpress.com/) and [the rise in submissions related to audiovisual topics at the global ADHO conference](https://figshare.com/articles/AV_in_DH_State_of_the_Field/5680114) over the past few years. Newer investigations, such as [Distant Viewing TV](https://distantviewing.org/), also indicate a shift in the field toward projects concerned with using computational techniques to expand the scope of materials digital humanists can explore. As Erik Champion states, "The DH audience is not always literature-focused or interested in traditional forms of literacy" and applying digital methodologies to the study of audiovisual culture is an exciting and emerging facet of Digital Humanities (Champion, 2017). There are many valuable, free, and open-source tools and resources available to those interested in working with audiovisual materials (for example, the Programming Historian tutorial [Editing Audio with Audacity](https://programminghistorian.org/en/lessons/editing-audio-with-audacity)) and this tutorial will introduce another: FFmpeg.
+The Digital Humanities, as a discipline, have historically focused almost exclusively on the analysis of textual sources through computational methods (Hockey, 2004). However, there is growing interest in the field around using computational methods for the analysis of audiovisual cultural heritage materials as indicated by the creation of the [Alliance of Digital Humanities Organizations Special Interest Group: Audiovisual Materials in the Digital Humanities](https://avindhsig.wordpress.com/) and [the rise in submissions related to audiovisual topics at the global ADHO conference](https://figshare.com/articles/AV_in_DH_State_of_the_Field/5680114) over the past few years. Newer investigations, such as [Distant Viewing TV](https://distantviewing.org/), also indicate a shift in the field toward projects concerned with using computational techniques to expand the scope of materials digital humanists can explore. As Erik Champion states, "The DH audience is not always literature-focused or interested in traditional forms of literacy" and applying digital methodologies to the study of audiovisual culture is an exciting and emerging facet of Digital Humanities (Champion, 2017). There are many valuable, free, and open-source tools and resources available to those interested in working with audiovisual materials (for example, the Programming Historian tutorial [Editing Audio with Audacity](https://programminghistorian.org/en/lessons/editing-audio-with-audacity)) and this tutorial will introduce another: FFmpeg.
 
 [FFmpeg](https://www.ffmpeg.org/) is the leading open-source multimedia framework for transcoding, editing, filtering, and playing nearly every kind of digital audio-visual format. Many common software applications and websites use FFmpeg to handle reading and writing audio-visual files, including VLC, Google Chrome, YouTube, [and many more.](https://trac.ffmpeg.org/wiki/Projects) In addition to being a software and web-developer tool, FFmpeg can be used at the command-line to perform many common, complex, and important tasks related to preservation, playback, and data visualization and retrieval. As such, FFmpeg is an incredibly valuable tool for digital humanists working with audio-visual data. Knowledge of the framework empowers researchers to manipulate audio-visual materials to meet their needs with a free, open-source solution that carries much of the functionality of expensive audio and video editing software.
 
-Although it is helpful have some familiarity with Bash scripting, other programming languages, and/or command-line tools to learn the basics of FFmpeg, this prior knowledge is by no means necessary. If you are interested in learning more about these skills, check out the [Bash tutorial](https://programminghistorian.org/en/lessons/intro-to-bash) (Mac and Linux users) or the [Windows PowerShell tutorial](https://programminghistorian.org/en/lessons/intro-to-powershell#quick-reference). Additionally, a basic understanding of audiovisual [codecs](https://en.wikipedia.org/wiki/Codec) and [containers](https://en.wikipedia.org/wiki/Digital_container_format) will also be useful to understanding what FFmpeg does and how it works.
+## Prerequisites
+Although it is helpful have some familiarity with Bash scripting, other programming languages, and/or command-line tools to learn the basics of FFmpeg, this prior knowledge is by no means necessary. However, you will need to be able to access your [Terminal](https://en.wikipedia.org/wiki/Terminal_(macOS) or other command-line interface on your computer. If you are interested in learning more about these skills, check out the [Bash tutorial](https://programminghistorian.org/en/lessons/intro-to-bash) (Mac and Linux users) or the [Windows PowerShell tutorial](https://programminghistorian.org/en/lessons/intro-to-powershell#quick-reference). Additionally, a basic understanding of audiovisual [codecs](https://en.wikipedia.org/wiki/Codec) and [containers](https://en.wikipedia.org/wiki/Digital_container_format) will also be useful to understanding what FFmpeg does and how it works.
 
 ## Learning Objectives
 * Learn how to install FFmpeg on your computer or use a demo version in your web browser
@@ -31,7 +32,7 @@ there are some helpful guides and resources available for installing the framewo
 The simplest option is to use a package manager such as [Homebrew](https://brew.sh/)
 to install FFmpeg and ensure it remains in the most up-to-date version. To complete this kind of installation, follow these steps:
 * Install Homebrew following the instructions on the website
-* Run `brew install ffmpeg` in your [Terminal](https://en.wikipedia.org/wiki/Terminal_(macOS)) to initiate a basic installation.
+* Run `brew install ffmpeg` in your Terminal to initiate a basic installation.
     * **Note**: Generally, it is recommended to install FFMpeg with additional features than what is included in the basic installation. Including additional options will provide access to more of FFmpeg's tools and functionalities. Reto Kromer's [Apple installation guide](https://avpres.net/FFmpeg/install_Apple.html) provides a good set of additional options:
     `brew install ffmpeg --with-sdl2 --with-freetype --with-openjpeg --with-x265 --with-rubberband --with-tesseract`
     * For an explanation of these additional options, refer to [Ashley Blewer's FFmpeg guide](https://training.ashleyblewer.com/presentations/ffmpeg.html#10)
@@ -107,7 +108,7 @@ In this example, we will begin with an input file with an `.mp4` extension (cont
 
 To change the container (extension) of a file:
 
-`ffmpeg -i input_file.mp4 -c copy -map 0 output_file.mp4`
+`ffmpeg -i input_file.mp4 -c copy -map 0 output_file.mov`
 
 * `ffmpeg` = starts the command
 * `-i input_file.mp4` = path and name of input file
@@ -126,8 +127,8 @@ In this example, we will re-encode (transcode) a new output file to a certain sp
 * `-i input_file.mp4` = path and name of input file
 * `-c:v prores` = copies the video stream to ProRes 422
 * `-profile:v 1` = indicates the ProRes LT profile. More on [ProRes profiles](https://documentation.apple.com/en/finalcutpro/professionalformatsandworkflows/index.html#chapter=10%26section=2)
-* `-c:a aac` = copies the audio stream to AAC
-* `-vf yadif` = uses "yadif" video filter to deinterlace the image
+* `-c:a aac` = copies the audio stream to the [AAC](https://en.wikipedia.org/wiki/Advanced_Audio_Coding) codec
+* `-vf yadif` = uses "yadif" video filter to [deinterlace](https://en.wikipedia.org/wiki/Deinterlacing) the image
 * `output_file.mov` = path and name of output file. Note this is where a new container may also be specified.
 
 ## Demux Audio & Video (Separate audio and video streams into separate files)
@@ -302,5 +303,8 @@ FFmpeg has a large and well-supported community of users across the globe. As su
 
 * Hockey, S. (2004) “The History of Humanities Computing,” A Companion to Digital Humanities, ed. Susan Schreibman, Ray Siemens, John Unsworth. Oxford: Blackwell
 
+# About the Author
 
-# This tutorial was made possible with the support of the British Academy and written during the Programming Historian Workshop at La Universidad de Los Andes in Bogotá, Colombia, July 31 - August 3, 2018.
+Dave Rodriguez is an audiovisual archivist and filmmaker. He is currently a Resident Librarian at Florida State University.
+
+# This tutorial was made possible with the support of the British Academy and written during the Programming Historian Workshop at La Universidad de Los Andes in Bogotá, Colombia, 31 July - 3 August, 2018.
