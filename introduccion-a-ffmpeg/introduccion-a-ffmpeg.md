@@ -10,35 +10,39 @@ date: 2018-05-02
 reviewers:
 layout: lesson
 ---
+Translation updates to be made:
+* *look for sections in italics*
+
+
 
 # Introducción
-Historicamente, las Humanidades Digitales, como una disciplina, se han enfocado casi exclusivamente en el analisis de fuentes textuales a través de métodos computacionales (Hockey, 2004). Sin embargo, hay un interés creciente en el campo de la utilización de métodos computacionales para el analisis de materiales audiovisuales de herencia cultural como se indica por la creación de el [Alianza de Organizaciones de Humanidades Digitales Grupo de Interés Especial: Materiales audiovisuales en Humanidades Digitales](https://avindhsig.wordpress.com/) y el [el aumento de las presentaciones relacionadas con temas audiovisuales en la conferencia global de AOHD](https://figshare.com/articles/AV_in_DH_State_of_the_Field/5680114) en los años pasados. Investigaciones más nuevas, como [Distant Viewing TV](https://distantviewing.org/), también indican un cambio en el campo hacia proyectos relacionados con el uso de técnicas computacionales para ampliar el alcance de los materiales que los humanistas digitales pueden explorar. Como estados Erik Champion, "La audiencia de HD no siempre está enfocada en la literatura o está interesada en las formas tradicionales de alfabetización" y la aplicación de metodologías digitales para estudiar cultura audiovisual es un emocionante y emergente faceta de las Humanidades Digitales (Champion, 2017). Hay muchos valoroso, gratuita, y código abierto herramientas y recursos disponibles para aquellos interesados en trabajar con materiales audiovisuales (por ejemplo, el tutorial de Programming Historian [Editar Audio con Audacity](https://programminghistorian.org/es/lecciones/editar-audio-con-audacity)) y este tutorial presentará otro: FFmpeg.
+Historicamente, las Humanidades Digitales, como una disciplina, se han enfocado casi exclusivamente en el analisis de fuentes textuales a través de métodos computacionales (Hockey, 2004). Sin embargo, hay un interés creciente en el campo de la utilización de métodos computacionales para el analisis de materiales audiovisuales de herencia cultural como se indica por la creación de el [Alianza de Organizaciones de Humanidades Digitales Grupo de Interés Especial: Materiales audiovisuales en Humanidades Digitales](https://avindhsig.wordpress.com/) y el [el aumento de las presentaciones relacionadas con temas audiovisuales en la conferencia global de AOHD](https://figshare.com/articles/AV_in_DH_State_of_the_Field/5680114) en los años pasados. Investigaciones más nuevas, como [Distant Viewing TV](https://distantviewing.org/), también indican un cambio en el campo hacia proyectos relacionados con el uso de técnicas computacionales para ampliar el alcance de los materiales que los humanistas digitales pueden explorar. Como estados Erik Champion, "La audiencia de HD no siempre está enfocada en la literatura o está interesada en las formas tradicionales de alfabetización" y la aplicación de metodologías digitales para estudiar cultura audiovisual es un emocionante y emergente faceta de las Humanidades Digitales (Champion, 2017). Hay muchos valoroso, gratuita, y código abierto herramientas y recursos disponibles para aquellos interesados en trabajar con materiales audiovisuales (por ejemplo, el tutorial de Programming Historian [Editar Audio con Audacity](/es/lecciones/editar-audio-con-audacity)) y este tutorial presentará otro: FFmpeg.
 
-[FFmpeg](https://www.ffmpeg.org/) es el marco multimedia de código abierto líder para transcodificar, editar, filtrar, y reproducir casi cualquier tipo de formato audiovisual digital. Muchos programs comunes y sitios web usan FFmpeg para leer y escribir archivos audiovisuales incluso VLC, Google Chrome, YouTube y [muchos más](https://trac.ffmpeg.org/wiki/Projects). Además de ser una herramienta de software y desarrollo de Internet, FFmpeg se puede usar en la interfaz de línea de comandos para realizar muchas tareas comúnes, complejas, e importantes relacionadas con la preservación, reproducción de archivos, y visualización y recuperación de metadatos. Como tal, FFmpeg es una herramienta increíblemente valiosa para los humanistas digitales que trabajan con datos audiovisuales. El conocimiento del marco permite a los investigadores manipular materiales audiovisuales para satisfacer sus necesidades con una solución gratuita de código abierto con mucha de la misma funcionalidad que los costosos software de audio y vídeo.
+*[FFmpeg](https://www.ffmpeg.org/about.html) es el marco multimedia de código abierto líder para transcodificar, editar, filtrar, y reproducir casi cualquier tipo de formato audiovisual digital. Muchos programs comunes y sitios web usan FFmpeg para leer y escribir archivos audiovisuales incluso VLC, Google Chrome, YouTube y [muchos más](https://trac.ffmpeg.org/wiki/Projects). Además de ser una herramienta de software y desarrollo de Internet, FFmpeg se puede usar en la interfaz de línea de comandos para realizar muchas tareas comúnes, complejas, e importantes relacionadas con la preservación, reproducción de archivos, y visualización y recuperación de metadatos. Como tal, FFmpeg es una herramienta increíblemente valiosa para los humanistas digitales que trabajan con datos audiovisuales. El conocimiento del marco permite a los investigadores manipular materiales audiovisuales para satisfacer sus necesidades con una solución gratuita de código abierto con mucha de la misma funcionalidad que los costosos software de audio y vídeo.*
 
-## Requisitos previos
-Aunque es útil tener cierta familiaridad con las herramientas de Bash, la interfaz de línea de comandos, o otros lenguajes de programación a aprender los básicos de FFmpeg, este conocimiento previo no es critico. Sin embargo, necesitarás poder acceder a su [Terminal](https://es.wikipedia.org/wiki/Terminal_(OS_X) o otra interfaz de línea de comandos en su computadora. Si le interesa aprender más sobre estas habilidades, revise [Introducción a la línea de comandos en Bash](https://programminghistorian.org/es/lecciones/introduccion-a-bash) o [Introducción a la línea de comandos de Windows con PowerShell](https://programminghistorian.org/es/lecciones/introduccion-a-powershell). Adicionalmente, una entendimiento básica de [contenedores](https://es.wikipedia.org/wiki/Formato_contenedor) y [códecs](https://es.wikipedia.org/wiki/C%C3%B3dec) audiovisuales también será útil para entender qué hace FFmpeg y cómo funciona.
-
-## Objectivos de aprendizaje
+*## Objectivos de aprendizaje
 * Aprender a instalar FFmpeg en su computadora o usar una versión en el navegador de Internet
 * Comprender la estructura básica y sintaxis de los comandos de FFmpeg
 * Aprender varios comandos útiles
-* Introducir recursos para mayor exploración y experimentación
+* Introducir recursos para mayor exploración y experimentación*
+
+*## Requisitos previos
+Aunque es útil tener cierta familiaridad con las herramientas de Bash, la interfaz de línea de comandos, o otros lenguajes de programación a aprender los básicos de FFmpeg, este conocimiento previo no es critico. Sin embargo, necesitarás poder acceder a su [Terminal](https://es.wikipedia.org/wiki/Terminal_(OS_X) o otra interfaz de línea de comandos en su computadora. Si le interesa aprender más sobre estas habilidades, revise [Introducción a la línea de comandos en Bash](/es/lecciones/introduccion-a-bash) o [Introducción a la línea de comandos de Windows con PowerShell](/es/lecciones/introduccion-a-powershell). Adicionalmente, una entendimiento básica de [contenedores](https://es.wikipedia.org/wiki/Formato_contenedor) y [códecs](https://es.wikipedia.org/wiki/C%C3%B3dec) audiovisuales también será útil para entender qué hace FFmpeg y cómo funciona.*
 
 # Cómo instalar FFmpeg
 La instalación de FFmpeg es posiblemente la parte más difícil de usar FFmpeg. Felizmente, hay algunas guías útiles y recursos disponibles para instalar el marco para cada tipo de sistema operativo.
 
-* **Note**: Nuevas versiones de FFmpeg son lanzadas aproximadamente cada seis meses. Para mantenerse al tanto de las nuevas versiones, siga FFmpeg en [Twitter](https://twitter.com/FFmpeg) o en [el sitio web](https://www.ffmpeg.org/index.html#news)
+_* **Note**: Nuevas versiones de FFmpeg son lanzadas aproximadamente cada seis meses. Para mantenerse al tanto de las nuevas versiones, siga FFmpeg en [Twitter](https://twitter.com/FFmpeg) o en [el sitio web](https://www.ffmpeg.org/index.html#news)_
 
 ## Para usuarios de Mac OS
-La opción más simple es usar un administrador de paquetes como [Homebrew](https://brew.sh/) para instalar FFmpeg y asegurar que permanezca en la versión más reciente. Para completar este tipo de instalación, siga estos pasos:
-* Instale Homebrew de acuerdo a las instrucctiones en el sitio web
+*La opción más simple es usar un administrador de paquetes como [Homebrew](https://brew.sh/) para instalar FFmpeg y asegurar que permanezca en la versión más reciente. Para completar este tipo de instalación, siga estos pasos:*
+* Instale Homebrew de acuerdo a las instrucctiones en el enlace de arriba
 * Ejecute `brew install ffmpeg` en su Terminal para comenzar una instalación básica
   * **Note**: Generalmente, es recomendado instalar FFmpeg con opciones adicionales a las incluidas en la instalación básica. Incluir opciones adicionales proporcionará accesso a más herramientas y funcionalidades de FFmpeg. [La Guía de Instalación de Apple de Reto Kromer](https://avpres.net/FFmpeg/install_Apple.html) proporciona un buen conjunto de opciones adicionales:
   `brew install ffmpeg --with-sdl2 --with-freetype --with-openjpeg --with-x265 --with-rubberband --with-tesseract`
   * Para una explicación de estas opciones adicionales, revise [La Guía FFmpeg de Ashley Blewer](https://training.ashleyblewer.com/presentations/ffmpeg.html#10).
-* Para actualizar su instalación a la versión más reciente, ejecute:
-`brew update && brew upgrade ffmpeg`
+_* Para actualizar su instalación a la versión más reciente, ejecute:
+`brew update && brew upgrade ffmpeg`_
 * Para más opciones de instalación para Mac OS, revise [La Guía Compilacion de FFmpeg para Mac OS](https://trac.ffmpeg.org/wiki/CompilationGuide/macOS).
 
 ## Para usarios de Windows
@@ -47,28 +51,28 @@ Usarios de Windows pueden usar el adminstratdor de paquetas [Chocolately](https:
 ## Para usarios de Linux
 [Linuxbrew](http://linuxbrew.sh/), una programa similar a Homebrew, se puede usar para instalar y mantener FFmepg en Linux. Reto Kromer también proporciona una guía útil, [La Guía de Instalación de Linux](https://avpres.net/FFmpeg/install_Linux.html), que es similar a la instalación en Mac OS.
 
-## Otras Recursos para Instalar
+*## Otras Recursos para Instalar
 
 * [Paquetas de descargar](https://www.ffmpeg.org/download.html)
-* [La Guía Compilacion de FFmpeg](https://trac.ffmpeg.org/wiki/CompilationGuide)
+* [La Guía Compilacion de FFmpeg](https://trac.ffmpeg.org/wiki/CompilationGuide)*
 
 ## Probando La Instalación
 * Para asegurarse de que FFmpeg se haya instalado correctamente, ejecute:
 `ffmpeg -version`
 * Si ve una producción larga de información, la instalación fue exitosa. Debe ser similar a lo siguiente:
 
-`ffmpeg version 3.4 Copyright (c) 2000-2017 the FFmpeg developers
-built with Apple LLVM version 9.0.0 (clang-900.0.38)
-configuration: --prefix=/usr/local/Cellar/ffmpeg/3.4 --enable-shared --enable-pthreads --enable-version3 --enable-hardcoded-tables --enable-avresample --cc=clang --host-cflags= --host-ldflags= --enable-gpl --enable-ffplay --enable-libfreetype --enable-libmp3lame --enable-librubberband --enable-libtesseract --enable-libx264 --enable-libx265 --enable-libxvid --enable-opencl --enable-vídeotoolbox --disable-lzma --enable-libopenjpeg --disable-decoder=jpeg2000 --extra-cflags=-I/usr/local/Cellar/openjpeg/2.3.0/include/openjpeg-2.3
-libavutil 55. 78.100 / 55. 78.100
-libavcodec 57.107.100 / 57.107.100
-libavformat 57. 83.100 / 57. 83.100
-libavdevice 57. 10.100 / 57. 10.100
-libavfilter 6.107.100 / 6.107.100
-libavresample 3. 7. 0 / 3. 7. 0
-libswscale 4. 8.100 / 4. 8.100
-libswresample 2. 9.100 / 2. 9.100
-libpostproc 54. 7.100 / 54. 7.100`
+`ffmpeg version 4.0.1 Copyright (c) 2000-2018 the FFmpeg developers
+built with Apple LLVM version 9.1.0 (clang-902.0.39.1)
+configuration: --prefix=/usr/local/Cellar/ffmpeg/4.0.1 --enable-shared --enable-pthreads --enable-version3 --enable-hardcoded-tables --enable-avresample --cc=clang --host-cflags= --host-ldflags= --enable-gpl --enable-ffplay --enable-libfreetype --enable-libmp3lame --enable-librubberband --enable-libtesseract --enable-libx264 --enable-libx265 --enable-libxvid --enable-opencl --enable-videotoolbox --disable-lzma --enable-libopenjpeg --disable-decoder=jpeg2000 --extra-cflags=-I/usr/local/Cellar/openjpeg/2.3.0/include/openjpeg-2.3
+libavutil      56. 14.100 / 56. 14.100
+libavcodec     58. 18.100 / 58. 18.100
+libavformat    58. 12.100 / 58. 12.100
+libavdevice    58.  3.100 / 58.  3.100
+libavfilter     7. 16.100 /  7. 16.100
+libavresample   4.  0.  0 /  4.  0.  0
+libswscale      5.  1.100 /  5.  1.100
+libswresample   3.  1.100 /  3.  1.100
+libpostproc    55.  1.100 / 55.  1.100`
 
 * Si ve algo como `-bash: ffmpeg: command not found`, algo ha ido mal.
 
