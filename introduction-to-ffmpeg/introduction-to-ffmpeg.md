@@ -17,12 +17,11 @@ The Digital Humanities, as a discipline, have historically focused almost exclus
 * Learn how to install FFmpeg on your computer or use a demo version in your web browser
 * Understand the basic structure and syntax of FFmpeg commands
 * Learn several useful commands such as:
-  * "Re-wrapping" (change file container)
-  * Transcoding (re-encode files)
+  * "Re-wrapping" (change file container) & Transcoding (re-encode files)
   * Demuxing (seperating audio and video tracks)
   * Trimming/Editing files
   * Generating metadata reports
-  * File plackback
+  * File playback
   * Audio and Video Data Visualization (creating waveforms and vectorscopes)
 * Introduce resources for further exploration and experimentation
 
@@ -109,7 +108,7 @@ structure and syntax. These commands will also demonstrate some of FFmpeg's most
 basic and useful functions.
 
 # Getting Started
-For this tutorial, we will use the video clip found at [videoconverter.js](https://bgrins.github.io/videoconverter.js/demo/bigbuckbunny.webm). This video sample has been provided by [The Blender Foundation](https://www.blender.org/foundation/) under a [Creative Commons Attribution 3.0 license](https://creativecommons.org/licenses/by/3.0/). Download the video and save it to a directory that you can easily access on your computer under the name `bigbuckbunny.webm`. This video will be the primary "test subject" of this tutorial and will be used to demonstrate the features of FFmpeg.
+For this tutorial, we will use the video clip found at [videoconverter.js](https://bgrins.github.io/videoconverter.js/demo/bigbuckbunny.webm). This video has been provided by [The Blender Foundation](https://www.blender.org/foundation/) under a [Creative Commons Attribution 3.0 license](https://creativecommons.org/licenses/by/3.0/). Download the video and save it to a directory that you can easily access on your computer under the name `bigbuckbunny.webm`. This video will be the primary "test subject" of this tutorial and will be used to demonstrate the features of FFmpeg.
 
 # Command Examples
 
@@ -124,7 +123,7 @@ You will see the file's basic metadata printed in the `stdout`:
 
 The `Input #0` line identifies the **container** as [.webm](https://www.webmproject.org/about/), which is a variation of the [Matroska](https://www.matroska.org/) standard. Containers (also called "wrappers") are synonymous with the file's extension and provide the file with structure for its various streams. Different containers (other common ones include `.mov`, `.mp4`, and `.avi`) have different features and compatibilities with various software. We will examine how and why you might want to change a file's container in the next command.
 
-The lines `Stream #0:0` and `Stream #0:1` provide information about the file's streams (i.e. the content you see on screen and hear through your speakers) and identify the **codec** of each stream as well. Codecs specify how information is encoded/compressed (written and stored) and decoded/decompressed (played back). The file's video stream (`Stream #0:0`) uses the [vp8](https://en.wikipedia.org/wiki/VP8) codec while the audio stream (`Stream #0:1`) uses the [vorbis](https://en.wikipedia.org/wiki/Vorbis) codec. Codecs, to a much greater extent than containers, determine an audiovisual file's quality and compatibility (other common codecs include `H.264` and `ProRes` for video and `AAC` and `FLAC` for audio). We will examine how and why you might want to change a file's codec later in the tutorial.
+The lines `Stream #0:0` and `Stream #0:1` provide information about the file's streams (i.e. the content you see on screen and hear through your speakers) and identify the **codec** of each stream as well. Codecs specify how information is encoded/compressed (written and stored) and decoded/decompressed (played back). The file's video stream (`Stream #0:0`) uses the [vp8](https://en.wikipedia.org/wiki/VP8) codec while the audio stream (`Stream #0:1`) uses the [vorbis](https://en.wikipedia.org/wiki/Vorbis) codec. Codecs, to a much greater extent than containers, determine an audiovisual file's quality and compatibility (other common codecs include `H.264` and `ProRes` for video and `AAC` and `FLAC` for audio). We will examine how and why you might want to change a file's codec in the next command as well.
 
 Now that we know more about the technical make-up of our file, we can begin exploring the transformative features and functionalities of FFmpeg (we will use `ffprobe` again later in the tutorial to conduct more advanced metadata extraction).
 
@@ -135,20 +134,22 @@ Depending on your operating system, you may have one or more media players insta
 
 One option when faced with such a message is to simply use another media player ([VLC](https://www.videolan.org/vlc/index.html), which is built with FFmpeg, is an excellent open-source alternative) but simply "using another software" may not always be a viable solution. Many popular video editors such as Adobe Premiere, Final Cut Pro, and DaVinci Resolve all have their own limitations on the kinds of formats they are compatible with. Further, different web-platforms and hosting/streaming sites such as Vimeo have their own required formats as well. As such, it is important to be able to re-wrap and transcode your files to meet the various specifications for playback, editing, and digital publication.
 
-In this example, we will begin with our `bigbuckbunny.webm` and write a new file with video encoded to `H.264` and audio to `AAC` wrapped in an `.mp4` container. Here is the command you will execute along with an explanation of each part of syntax:
+In this example, we will begin with our `bigbuckbunny.webm` and write a new file with video encoded to `H.264` and audio to `AAC` wrapped in an `.mp4` container. Here is the command you will execute along with an explanation of each part of the syntax:
 
 `ffmpeg -i bigbuckbunny.webm -c:v libx264 -c:a aac bigbuckbunny.mp4`
 
 * `ffmpeg` = starts the command
-* `-i bigbuckbunny.webm` = path and name of input file
+* `-i bigbuckbunny.webm` = specifies the input file
 * `-c:v libx264` = copy the video stream to the H.264 codec
 * `-c:a aac` = copy the audio stream to the AAC codec
-* `bigbuckbunny.mp4` = name of the output file. Note this is where the new container type is specified
+* `bigbuckbunny.mp4` = specifies the output file. Note this is where the new container type is specified
 
-If you execute this command while in the same directory as `bigbuckbunny.webm`, you will see a new file called `bigbuckbunny.mp4` appear in the directory. You will also be able to play this new file through QuickTime.
+If you execute this command while in the same directory as `bigbuckbunny.webm`, you will see a new file called `bigbuckbunny.mp4` appear in the directory. You will also be able to play this new file through QuickTime. Notice that although there isn't any significant visible or audible difference between the `.mp4` and `.webm` versions of the file, running `ffprobe bigbuckbunny.mp4` yields different technical metadata. Often this technical metadata can be just as important to accessing and working with audiovisual files than anything we can see or hear.
 
 ## Demux Audio & Video (Separate audio and video streams into separate files)
-"Demuxing" an audiovisual file simply means to separate its different components or tracks (for example, audio and video tracks) into their own files. This is useful if you are interested in examining these components discretely or performing some kind of specialized analysis.
+Now that we have a better understanding of streams, codecs, and containers, lets look at ways FFmpeg can dig deeper into these media components. One way forward is to "demux" the file into its constituent parts. "Demuxing" an audiovisual file simply means to separate its different components or tracks (for example, audio and video tracks) into their own files. This is useful if you are interested in examining these components discretely or performing some kind of specialized analysis.
+
+[Provide examples and use cases for audio and image-specific DH projects]
 
 To separate the streams in a file into new files:
 
@@ -229,6 +230,10 @@ The number `0` can be changed to any number and `ffplay` will play the file that
 [Data visualization](https://en.wikipedia.org/wiki/Data_visualization) is a concept familiar to digital humanists. For years, sound and video professionals have also relied on data visualization to work with audio-visual content. These types of visualizations include [vectorscopes](https://en.wikipedia.org/wiki/Vectorscope#Video) (to visualize video color information) and [waveform patterns](https://en.wikipedia.org/wiki/Waveform) (to visualize audio signal data). Although this kind of data visualization is not the kind traditionally created by DH scholarship, FFmpeg includes a number of tools and libraries that can be used to visualize sound and image information that can potentially expand the field and open new lines of critical inquiry.
 
 This section will provide commands for creating a few different types of visualizations with examples of the intended result. Additionally, these commands are more complex than the previous examples in this tutorial and provide further insight into creating complex options for FFmpeg commands.
+
+[http://zauberklang.ch/filmcolors/#/]
+[https://filmcolors.org/]
+[https://filmcolors.org/2018/03/08/vian/]
 
 ### Vectorscope (Video)
 To play a video accompanied by a vectorscope:
