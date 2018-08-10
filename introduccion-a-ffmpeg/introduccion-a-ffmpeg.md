@@ -96,9 +96,13 @@ Escrito genéricamente, el comando básico se parece a lo siguiente:
 
 A continuación, examinaremos algunos ejemplos de varios comandos diferentes que usan esta estructura y sintaxis. Adicionalmente, estos comandos demostrarán algunas de las características más útiles de FFmpeg.
 
-# Ejemplos de Comandos
+# Getting Started
+
+*# Ejemplos de Comandos
 Los siguientes ejemplos están escritos con nombres de archivos genéricos como `entrada_archivo.ext`. En la práctica real, deberá escribir nombres, extensiones, y rutas de archivos completos de todos archivos de entrads y salidas. Puede usar estos comandos con cualquier archivo de vídeo, o descargar una muestra de [vídeoconverter.js](https://bgrins.github.io/videoconverter.js/demo/bigbuckbunny.webm). Este vídeo ha sido provisto por [The Blender Foundation](https://www.blender.org/foundation/) bajo una licencia [Creative Commons Attribution 3.0](https://creativecommons.org/licenses/by/3.0/).
-Además, cada ejemplo proporciona una breve explicación de cada parte del comando.
+Además, cada ejemplo proporciona una breve explicación de cada parte del comando.*
+
+## Gather Basic Metadata
 
 ## Cambiar el Contenedor (Volver a envolver)
 En este ejemplo, empecemos con un archivo de entrada con una extensión (contenedor) `.mp4` y crear un nuevo archivo de salida "vuelto a envolver" con una contenedor`.mov`. Puede ser necessario a cambiar contenedors dependiendo en su sistema operativo y la compatibilidad de otras software de audiovisual que está usando, especialmente si quiere mantener la codificación original (códec) de el archivo de entrada (vamos a examinar como cambiar el códec o "transcodificar" en el siguiente ejemplo).

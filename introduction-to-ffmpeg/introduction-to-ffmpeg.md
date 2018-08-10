@@ -27,7 +27,7 @@ The Digital Humanities, as a discipline, have historically focused almost exclus
 * Introduce resources for further exploration and experimentation
 
 ## Prerequisites
-Before starting this tutorial, you should be comfortable with locating and using your computer's [Terminal](https://en.wikipedia.org/wiki/Terminal_(macOS)) or other command-line interface, as this is where you will be entering and executing FFmpeg commands. If you need instruction on how to access and work at the command-line, I recommend the Program Historian's [Bash tutorial](/en/lessons/intro-to-bash) for Mac and Linux users or the [Windows PowerShell tutorial](/en/lessons/intro-to-powershell#quick-reference). Additionally, a basic understanding of audiovisual [codecs](https://en.wikipedia.org/wiki/Codec) and [containers](https://en.wikipedia.org/wiki/Digital_container_format) will also be useful to understanding what FFmpeg does and how it works. Briefly, a file's container corresponds to its extension (such as `.mov`, `.mp4`, or `.ogg`) whereas the codec relates to the manner in which the file is encoded/decoded (common audiovisual codecs include `AAC` for audio and `H.264` for video).
+Before starting this tutorial, you should be comfortable with locating and using your computer's [Terminal](https://en.wikipedia.org/wiki/Terminal_(macOS)) or other command-line interface, as this is where you will be entering and executing FFmpeg commands. If you need instruction on how to access and work at the command-line, I recommend the Program Historian's [Bash tutorial](/en/lessons/intro-to-bash) for Mac and Linux users or the [Windows PowerShell tutorial](/en/lessons/intro-to-powershell#quick-reference). Additionally, a basic understanding of audiovisual [codecs](https://en.wikipedia.org/wiki/Codec) and [containers](https://en.wikipedia.org/wiki/Digital_container_format) will also be useful to understanding what FFmpeg does and how it works. We will provide some additional information and discuss codecs and containers in a bit more detail in the Command Examples section of this tutorial.
 
 # Installing FFmpeg
 Installing FFmpeg can be the most difficult part of using FFmpeg. Thankfully,
@@ -61,6 +61,7 @@ that closely resembles the Mac OS installation.
   * FFmpeg allows access to binary files and source code directly through its website, enabling users to build the framework without a package manager. It is likely that only advanced users will want to follow this option.
 * [FFmpeg Compilation Guide](https://trac.ffmpeg.org/wiki/CompilationGuide)
   * The FFmpeg Wiki page provides a compendium of guides and strategies for building FFmpeg on your computer.
+
 ## Testing the Installation
 * To ensure FFmpeg is installed properly, run:
 `ffmpeg -version`
@@ -107,37 +108,44 @@ Next, we will look at some examples of several different commands that use this
 structure and syntax. These commands will also demonstrate some of FFmpeg's most
 basic and useful functions.
 
+# Getting Started
+For this tutorial, we will use the video clip found at [videoconverter.js](https://bgrins.github.io/videoconverter.js/demo/bigbuckbunny.webm). This video sample has been provided by [The Blender Foundation](https://www.blender.org/foundation/) under a [Creative Commons Attribution 3.0 license](https://creativecommons.org/licenses/by/3.0/). Download the video and save it to a directory that you can easily access on your computer under the name `bigbuckbunny.webm`. This video will be the primary "test subject" of this tutorial and will be used to demonstrate the features of FFmpeg.
+
 # Command Examples
-The following examples are written with generic file names like `input_file.ext`. In actual practice, you will need to write out the full name, extension, and relative filepath of all input and output files. You can follow these commands with any video file of your choice or download a sample file from [videoconverter.js](https://bgrins.github.io/videoconverter.js/demo/bigbuckbunny.webm). This video sample has been provided by [The Blender Foundation](https://www.blender.org/foundation/) under a [Creative Commons Attribution 3.0 license](https://creativecommons.org/licenses/by/3.0/).
-Each example will also provide a brief explanation of each part of the command.
 
-## Change Container (Re-Wrap)
-In this example, we will begin with an input file with an `.mp4` extension (container) and create an new output file "re-wrapped" with an `.mov` container. It may be necessary to change containers depending on the operating system and compatibility other audiovisual software you are using, especially if you want to keep the original encoding (codec) of the input file (we will examine how to change the codec or "transcode" in the next example).
+## Gathering Basic Metadata
+Before we begin manipulating our `bigbuckbunny.webm` file, let's use FFmpeg to examine some basic information about the file itself using a simple `ffprobe` command. Navigate to the file's directory and execute:
 
-To change the container (extension) of a file:
+`ffprobe bigbuckbunny.webm`
 
-`ffmpeg -i input_file.mp4 -c copy -map 0 output_file.mov`
+You will see the file's basic metadata printed in the `stdout`:
+
+[SCREENSHOT - FFPROBE_BASIC]
+
+The `Input #0` line identifies the **container** as [.webm](https://www.webmproject.org/about/), which is a variation of the [Matroska](https://www.matroska.org/) standard. Containers (also called "wrappers") are synonymous with the file's extension and provide the file with structure for its various streams. Different containers (other common ones include `.mov`, `.mp4`, and `.avi`) have different features and compatibilities with various software. We will examine how and why you might want to change a file's container in the next command.
+
+The lines `Stream #0:0` and `Stream #0:1` provide information about the file's streams (i.e. the content you see on screen and hear through your speakers) and identify the **codec** of each stream as well. Codecs specify how information is encoded/compressed (written and stored) and decoded/decompressed (played back). The file's video stream (`Stream #0:0`) uses the [vp8](https://en.wikipedia.org/wiki/VP8) codec while the audio stream (`Stream #0:1`) uses the [vorbis](https://en.wikipedia.org/wiki/Vorbis) codec. Codecs, to a much greater extent than containers, determine an audiovisual file's quality and compatibility (other common codecs include `H.264` and `ProRes` for video and `AAC` and `FLAC` for audio). We will examine how and why you might want to change a file's codec later in the tutorial.
+
+Now that we know more about the technical make-up of our file, we can begin exploring the transformative features and functionalities of FFmpeg (we will use `ffprobe` again later in the tutorial to conduct more advanced metadata extraction).
+
+## Changing Containers and Codecs (Re-Wrap and Transcode)
+Depending on your operating system, you may have one or more media players installed. For the purposes of demonstration, let's see what happens if you try to open `bigbuckbunny.webm` using the QuickTime media player that comes with Mac OSX:
+
+[SCREEN SHOT - QUICKTIME ERROR]
+
+One option when faced with such a message is to simply use another media player ([VLC](https://www.videolan.org/vlc/index.html), which is built with FFmpeg, is an excellent open-source alternative) but simply "using another software" may not always be a viable solution. Many popular video editors such as Adobe Premiere, Final Cut Pro, and DaVinci Resolve all have their own limitations on the kinds of formats they are compatible with. Further, different web-platforms and hosting/streaming sites such as Vimeo have their own required formats as well. As such, it is important to be able to re-wrap and transcode your files to meet the various specifications for playback, editing, and digital publication.
+
+In this example, we will begin with our `bigbuckbunny.webm` and write a new file with video encoded to `H.264` and audio to `AAC` wrapped in an `.mp4` container. Here is the command you will execute along with an explanation of each part of syntax:
+
+`ffmpeg -i bigbuckbunny.webm -c:v libx264 -c:a aac bigbuckbunny.mp4`
 
 * `ffmpeg` = starts the command
-* `-i input_file.mp4` = path and name of input file
-* `-c copy` = copy the streams directly, without re-encoding
-* `-map 0` = map all streams in the input file into the output file. This is necessary
-especially if the file has multiple audio or subtitle tracks.
-* `output_file.mov` = path and name of output file. Note this is where the
-new container type is specified.
+* `-i bigbuckbunny.webm` = path and name of input file
+* `-c:v libx264` = copy the video stream to the H.264 codec
+* `-c:a aac` = copy the audio stream to the AAC codec
+* `bigbuckbunny.mp4` = name of the output file. Note this is where the new container type is specified
 
-## Change Codec & Container (Transcode)
-In this example, we will re-encode (transcode) a new output file to a certain specification. Transcoding audiovisual files is a very common and often necessary procedure for compatibility or if you need to create surrogate or derivative versions of a file. Additionally, you will often (but not always) want or need to re-wrap and transcode files with the same command. The following command will write a ProRes 422 LT output file with an `.mov` extension and also re-encode the file's audio track to the `aac` codec:
-
-`ffmpeg -i input_file.mp4 -c:v prores -profile:v 1 -c:a aac -vf yadif output_file.mov`
-
-* `ffmpeg` = starts the command
-* `-i input_file.mp4` = path and name of input file
-* `-c:v prores` = copies the video stream to ProRes 422
-* `-profile:v 1` = indicates the ProRes LT profile. More on [ProRes profiles](https://documentation.apple.com/en/finalcutpro/professionalformatsandworkflows/index.html#chapter=10%26section=2)
-* `-c:a aac` = copies the audio stream to the [AAC](https://en.wikipedia.org/wiki/Advanced_Audio_Coding) codec
-* `-vf yadif` = uses "yadif" video filter to [deinterlace](https://en.wikipedia.org/wiki/Deinterlacing) the image
-* `output_file.mov` = path and name of output file. Note this is where a new container may also be specified.
+If you execute this command while in the same directory as `bigbuckbunny.webm`, you will see a new file called `bigbuckbunny.mp4` appear in the directory. You will also be able to play this new file through QuickTime.
 
 ## Demux Audio & Video (Separate audio and video streams into separate files)
 "Demuxing" an audiovisual file simply means to separate its different components or tracks (for example, audio and video tracks) into their own files. This is useful if you are interested in examining these components discretely or performing some kind of specialized analysis.
