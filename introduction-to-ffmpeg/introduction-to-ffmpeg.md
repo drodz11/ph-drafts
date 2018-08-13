@@ -20,8 +20,8 @@ The Digital Humanities, as a discipline, have historically focused almost exclus
   * "Re-wrapping" (change file container) & Transcoding (re-encode files)
   * Demuxing (seperating audio and video tracks)
   * Trimming/Editing files
-  * Generating metadata reports
   * File playback
+  * Generating metadata reports
   * Audio and Video Data Visualization (creating waveforms and vectorscopes)
 * Introduce resources for further exploration and experimentation
 
@@ -134,6 +134,8 @@ Depending on your operating system, you may have one or more media players insta
 
 One option when faced with such a message is to simply use another media player ([VLC](https://www.videolan.org/vlc/index.html), which is built with FFmpeg, is an excellent open-source alternative) but simply "using another software" may not always be a viable solution. Many popular video editors such as Adobe Premiere, Final Cut Pro, and DaVinci Resolve all have their own limitations on the kinds of formats they are compatible with. Further, different web-platforms and hosting/streaming sites such as Vimeo have their own required formats as well. As such, it is important to be able to re-wrap and transcode your files to meet the various specifications for playback, editing, and digital publication.
 
+  **Note**: For a complete list of codecs and containers supported by your installation of FFmpeg, run `ffmpeg -codecs` and `ffmpeg -formats`, respectively, to see the list printed to your `stdout`.
+
 In this example, we will begin with our `bigbuckbunny.webm` and write a new file with video encoded to `H.264` and audio to `AAC` wrapped in an `.mp4` container. Here is the command you will execute along with an explanation of each part of the syntax:
 
 `ffmpeg -i bigbuckbunny.webm -c:v libx264 -c:a aac bigbuckbunny.mp4`
@@ -144,60 +146,82 @@ In this example, we will begin with our `bigbuckbunny.webm` and write a new file
 * `-c:a aac` = copy the audio stream to the AAC codec
 * `bigbuckbunny.mp4` = specifies the output file. Note this is where the new container type is specified
 
-If you execute this command while in the same directory as `bigbuckbunny.webm`, you will see a new file called `bigbuckbunny.mp4` appear in the directory. You will also be able to play this new file through QuickTime. Notice that although there isn't any significant visible or audible difference between the `.mp4` and `.webm` versions of the file, running `ffprobe bigbuckbunny.mp4` yields different technical metadata. Often this technical metadata can be just as important to accessing and working with audiovisual files than anything we can see or hear.
+If you execute this command while in the same directory as `bigbuckbunny.webm`, you will see a new file called `bigbuckbunny.mp4` appear in the directory. You will also be able to play this new file with QuickTime. Notice that although there isn't any significant visible or audible difference between the `.mp4` and `.webm` versions of the file, running `ffprobe bigbuckbunny.mp4` yields different technical metadata. Often this technical metadata can be just as important to accessing and working with audiovisual files than anything we can see or hear.
 
 ## Demux Audio & Video (Separate audio and video streams into separate files)
-Now that we have a better understanding of streams, codecs, and containers, lets look at ways FFmpeg can dig deeper into these media components. One way forward is to "demux" the file into its constituent parts. "Demuxing" an audiovisual file simply means to separate its different components or tracks (for example, audio and video tracks) into their own files. This is useful if you are interested in examining these components discretely or performing some kind of specialized analysis.
+Now that we have a better understanding of streams, codecs, and containers, lets look at ways FFmpeg can help us work with these media components at a more granular level. One useful method is to "demux" the file into its constituent parts. "Demuxing" an audiovisual file simply means to separate its different components or tracks (for example, audio and video tracks) into their own files.
 
-[Provide examples and use cases for audio and image-specific DH projects]
-
-To separate the streams in a file into new files:
+This is useful if you are interested in examining these components discretely or performing some kind of specialized analysis. For example, historicist audio forensics is an emerging area of DH scholarship that utilizes digital tools like [Praat](https://en.wikipedia.org/wiki/Praat) and [Audacity](https://www.audacityteam.org/) to analyze archival recordings of human voices (Camlot, 2015). Other tools for audio analysis and annotation such as the [Variations Audio Timeliner](http://variations.sourceforge.net/vat/index.html) can also be employed for similar "close listening" applications. At the end of this section, you will have created "audio only" and "video only" versions of `bigbuckbunny.mp4` using FFmpeg's "demuxing" syntax.
 
 ### Extract Audio
 
-`ffmpeg -i input_file.ext -c:a copy -vn output_file.ext`
+To create a new, stand-alone audio file from `bigbuckbunny.mp4`:
+
+`ffmpeg -i bigbuckbunny.mp4 -c:a copy -vn bigbuckbunny_audio-only.mp4`
 
 ### Extract Video
 
-`ffmpeg -i input_file.ext -c:v copy -an output_file.ext`
+To create a new, stand-alone video file from `bigbuckbunny.mp4`:
+
+`ffmpeg -i bigbuckbunny.mp4 -c:v copy -an bigbuckbunny_video-only.mp4`
 
 * `ffmpeg` = starts the command
-* `-i input_file.ext` = path and name of input file
+* `-i bigbuckbunny.mp4` = specifies the input file
 * `-c:v copy` = copy video stream directly, without re-encoding
 * `-c:a copy` = copy audio stream directly, without re-encoding
 * `-vn` = tells FFmpeg to ignore video stream
 * `-an` = tells FFmpeg to ignore audio stream
-* `output_file.ext` = path and name of output file
+* `bigbuckbunny_audio-only.mp4/bigbuckbunny_video-only.mp4` = specifies the output file
 
 Note that you will need to specify the correct extension depending on the kind of output file you are creating, however the `.mp4` container can be and is commonly used for either audio or video.
 
 ## Trim files
-Similarly, you can create an excerpt of a file for more focused analysis or investigation. There are several methods of doing this, and the following examples provide different uses of FFmpeg syntax to create excerpts.
+Demuxing commands allow a user to parse files into their various streams, but you may also need to edit these files into excerpts for even more focused investigation. The following commands will demonstrate a few different command syntax structures for creating excerpts.
 
-To create an excerpt of a file:
+### Create an excerpt by setting a start and end point
+In our first example, we'll create an excerpt from `bigbuckbunny.mp4` that contains everything in between the opening card reading "The Peach Open Movie Project Presents" (ending at timecode `00:00:05`) and the "Big Buck Bunny" title card (beginning at timecode `00:00:27`):
 
-`ffmpeg -i input_file.ext -ss 00:02:30 -to 00:05:00 -c copy -map 0 output_file.ext`
+`ffmpeg -i bigbuckbunny.mp4 -ss 00:00:05 -to 00:00:27 -c copy -map 0 bigbuckbunny_middle.mp4`
 
 * `ffmpeg` = starts the command
-* `-i input_file.ext` = path and name of input file
-* `-ss 00:02:30` = sets start point at 2 minutes and 30 seconds from start of file
-* `-to 00:05:00` = sets end point to 5 minutes from start of file
+* `-i bigbuckbunny.mp4` = specifies the input file
+* `-ss 00:00:05` = sets start point at 5 seconds from start of file
+* `-to 00:00:27` = sets end point to 27 seconds from start of file
 * `-c copy` = copy the streams directly, without re-encoding
 * `-map 0` = map all streams in the input file into the output file.
-* `output_file.ext` = path and name of output file
+* `bigbuckbunny_middle.mp4` = specifies the output file
 
-Alternatively, `-t` can be used to set duration instead of start and end points:
+### Create an excerpt by specifying duration
+Alternatively, `-t` can be used in combination with the `-ss` flag to set the duration of an excerpt instead of an end point. In this example, we'll create an excerpt of the main characters' first interaction with each other:
 
-`ffmpeg -i input_file.ext -ss 00:02:30 -t 150 -c copy -map 0 output_file.ext`
+`ffmpeg -i bigbuckbunny.mp4 -ss 00:00:09 -t 8 -c copy -map 0 bigbuckbunny_firstinteraction.mp4`
 
-* `-ss 00:02:30 -t 150` = sets start point at 2 minutes and 30 seconds from start of file
-and creates a 150-second-long excerpt
+* `-ss 00:00:09 -t 8` = sets start point at 9 seconds from start of file
+and creates an 8-second-long excerpt
 
-To create an excerpt starting at the beginning of a file:
+If you remove the `-ss` flag and only use `-t`, FFmpeg will create an excerpt starting at the beginning of the file (timecode `00:00:00`). In this example, we'll create an excerpt containing the first two shots of the video and introductory title cards:
 
-`ffmpeg -i input_file.ext -t 30 -c copy -map 0 output_file.ext`
+`ffmpeg -i bigbuckbunny.mp4 -t 11 -c copy -map 0 bigbuckbunny_intro.mp4`
 
-In this command, using `-t 30` will create a 30 second excerpt starting at timecode `00:00:00`
+At this point in the tutorial, you should have 7 files in your directory (including the original `bigbuckbunny.webm` file). Next we'll see how to use `ffplay` to play these files quickly and efficiently from the command-line.
+
+## Using FFplay (File playback)
+`FFplay` is a useful tool for testing and playing back new files created using `ffmpeg` commands or as a simple media player. As shown earlier when attempting to play a `.webm` file with a proprietary software like QuickTime, many media players have limitations on the kinds of files they are compatible with. However, `ffplay` supports [most of the file types you are likely to encounter](https://en.wikipedia.org/wiki/FFmpeg#Supported_codecs_and_formats) and new libraries and codec/format compatibilities are always being added to new versions of the framework.
+
+Basic `ffplay` syntax is very simple. Let's play our original `bigbuckbunny.webm` file by executing:
+
+`ffplay bigbuckbunny.webm`
+
+Note that with `ffplay` commands, you do not need indicate an `-i` flag or output file because the playback itself is the output. This command will play the file through one time in its own window. Although there are no traditional graphical icons of traditional media player features ("Play", "Stop", "Pause", etc.), these options can be [executed on your keyboard.](https://ffmpeg.org/ffplay.html#While-playing). Try out `ffplay` with the other files you've created and get a feel for using the keyboard controls. Also, notice that `ffplay` will seamlessly handle different kinds of files with the same simple command syntax shown above.
+
+### FFplay Options
+`FFplay` comes with a number of [options](https://ffmpeg.org/ffplay.html#Options) for customizing playback. The ability to loop playback is one of the more common options used in `ffplay`. Adding options to `ffplay` commands is the same as regular FFmpeg syntax, and in this example we'll create an infinite loop (using the `-loop` flag) of one of the short excerpts we created earlier:
+
+`ffplay -loop 0 bigbuckbunny_intro.mp4`
+
+  **Note**: The number `0` can be changed to any number and `ffplay` will play the file that many times.
+
+So far, we have examined basic metadata, transformed files, parsed and edited files, and explored how to playback what we have created. In the last sections of this tutorial, we will explore some more advanced commands that extract and visualize audiovisual data.
 
 ## Using FFprobe (Generate metadata reports)
 `FFprobe` is a powerful tool for extracting metadata from audio-visual files. This information can be output into several structured data (machine-readable) formats including `.json` and `.xml` that can be used for computational analysis or simply to store important information about a file(s). This example will write a `.json` file containing the technical metadata of the input file:
@@ -214,17 +238,6 @@ In this command, using `-t 30` will create a 30 second excerpt starting at timec
   and the report will be printed to the `stdout`.
 
 For more information on this command, see Reto Kromer's [explanation](https://avpres.net/FFmpeg/probe_json.html)
-
-## Using FFplay (File playback)
-`FFplay` is useful for testing and playing back new files created using `ffmpeg` commands or as a simple media player. As we will also see, `ffplay` can be used to playback files with specific parameters and filters. To play a file, simply run:
-
-`ffplay input_file.ext`
-
-This command will play the file through one time and then close the command window. Note that with `ffplay` commands, you do not need indicate an `-i` flag or output file because the playback itself is the output. To loop playback indefinitely:
-
-`ffplay -loop 0 input_file.ext`
-
-The number `0` can be changed to any number and `ffplay` will play the file that many times.
 
 ## Visualize audio and video information (Create vectorscopes and waveforms)
 [Data visualization](https://en.wikipedia.org/wiki/Data_visualization) is a concept familiar to digital humanists. For years, sound and video professionals have also relied on data visualization to work with audio-visual content. These types of visualizations include [vectorscopes](https://en.wikipedia.org/wiki/Vectorscope#Video) (to visualize video color information) and [waveform patterns](https://en.wikipedia.org/wiki/Waveform) (to visualize audio signal data). Although this kind of data visualization is not the kind traditionally created by DH scholarship, FFmpeg includes a number of tools and libraries that can be used to visualize sound and image information that can potentially expand the field and open new lines of critical inquiry.
@@ -319,6 +332,8 @@ FFmpeg has a large and well-supported community of users across the globe. As su
 * [QC Tools](https://bavc.org/preserve-media/preservation-tools)
 
 # References
+
+* Camlot, J. (2015) “Historicist Audio Forensics: The Archive of Voices as Repository of Material and Conceptual Artefacts.”19: Interdisciplinary Studies in the Long Nineteenth Century. 2015(21)
 
 * Champion, E. (2017) “Digital Humanities is text heavy, visualization light, and simulation poor,” Digital Scholarship in the Humanities 32(S1), i25-i32
 

@@ -96,7 +96,7 @@ Escrito genéricamente, el comando básico se parece a lo siguiente:
 
 A continuación, examinaremos algunos ejemplos de varios comandos diferentes que usan esta estructura y sintaxis. Adicionalmente, estos comandos demostrarán algunas de las características más útiles de FFmpeg.
 
-# Getting Started
+*# Para Empezar*
 
 *# Ejemplos de Comandos
 Los siguientes ejemplos están escritos con nombres de archivos genéricos como `entrada_archivo.ext`. En la práctica real, deberá escribir nombres, extensiones, y rutas de archivos completos de todos archivos de entrads y salidas. Puede usar estos comandos con cualquier archivo de vídeo, o descargar una muestra de [vídeoconverter.js](https://bgrins.github.io/videoconverter.js/demo/bigbuckbunny.webm). Este vídeo ha sido provisto por [The Blender Foundation](https://www.blender.org/foundation/) bajo una licencia [Creative Commons Attribution 3.0](https://creativecommons.org/licenses/by/3.0/).
@@ -130,7 +130,7 @@ En este ejemplo, recodificamos (transcodificar) un nuevo archivo de salida a una
 * `-vf yadif` = usa el filtro de vídeo "yadif" para [desentrelazar](https://en.wikipedia.org/wiki/Deinterlacing) la imagen
 * `salida_archivo.mov` = la ruta y el nombre del archivo de salida. Note que aquí es donde se define el nuevo contenedor
 
-## Demux Audio y Vídeo (Separar audio y vídeo en diferents archivos)
+*## Demux Audio y Vídeo (Separar audio y vídeo en diferents archivos)
 "Demuxing" un archivo audiovisual simplemente significa a seperar su diferentes componentes or pistas (por ejemplo, las pistas de audio y vídeo) en sus propios archivos. Esto es útil si está interesando en examinar estos componentes discretamente o para performar algún tipo de análisis especializado.
 
 Para separar las pistas de audio y vídeo en un archivo y crear nuevos archivos:
@@ -153,9 +153,9 @@ Para crear un nuevo archivo de vídeo (sin audio):
 * `-an` = le dice a FFmpeg que ignore la pista de audio
 * `salida_archivo.ext` = la ruta y el nombre del archivo de salida
 
-Note que necesita especificar la extensión correcta dependiendo en el tipo del archivo de salida está creando, sin embargo el contenedor `.mp4` puede ser y se usa comúnmente para audio o video.
+Note que necesita especificar la extensión correcta dependiendo en el tipo del archivo de salida está creando, sin embargo el contenedor `.mp4` puede ser y se usa comúnmente para audio o video.*
 
-## Recortar Archivos
+*## Recortar Archivos
 Comparablemente, puedes crear un extracto de un archivo para análisis o investigación más enfocado. Hay varios métodos para hacer esto, y los siguientes ejemplos proporcionan usas diferentes del syntaxis de FFmpeg para crear extractos.
 
 Para crear un extracto de un archivo sin recodificar:
@@ -207,7 +207,7 @@ Este comando reproduce el archivo una vez y luego cierra la ventana de comando. 
 
 `ffplay -loop 0 input_file.ext`
 
-El número `0` se puede cambiar a cualquier número y `ffplay` reproducirá el archivo tantas veces.
+El número `0` se puede cambiar a cualquier número y `ffplay` reproducirá el archivo tantas veces.*
 
 ## Visualizar Información Audio y Vídeo (Crear vectorscopio y forma de onda)
 [La visualización de datos](https://es.wikipedia.org/wiki/Visualizaci%C3%B3n_de_datos) es un concepto familiar para los humanistas digitales. Por años, los profesionales de sonido y vídeo también han usado la visualización de datos para trabajar con contenido audiovisual. Estos tipos de visualizaciones incluyen [vectorscopios](https://es.wikipedia.org/wiki/Vectorscopio) (para visualizar la información del color del vídeo) y [formas de onda](https://en.wikipedia.org/wiki/Waveform) (para visualizar los datos de la señal de audio). Aunque este tipo de la visualización de datos no es del tipo tradicionalmente creado por el trabajo HD, FFmpeg incluye una serie de herramientas y bibliotecas que se pueden utilizar para visualizar información de sonido e imagen que potencialmente puede expandir el campo y abrir nuevas líneas de investigación crítica.
