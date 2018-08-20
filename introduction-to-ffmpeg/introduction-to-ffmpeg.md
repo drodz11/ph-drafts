@@ -112,7 +112,7 @@ For this tutorial, we will use the video clip found at [videoconverter.js](https
 
 # Command Examples
 
-## Gathering Basic Metadata
+## Viewing Basic Metadata with FFprobe
 Before we begin manipulating our `bigbuckbunny.webm` file, let's use FFmpeg to examine some basic information about the file itself using a simple `ffprobe` command. Navigate to the file's directory and execute:
 
 `ffprobe bigbuckbunny.webm`
@@ -132,7 +132,7 @@ Depending on your operating system, you may have one or more media players insta
 
 [SCREEN SHOT - QUICKTIME ERROR]
 
-One option when faced with such a message is to simply use another media player ([VLC](https://www.videolan.org/vlc/index.html), which is built with FFmpeg, is an excellent open-source alternative) but simply "using another software" may not always be a viable solution. Many popular video editors such as Adobe Premiere, Final Cut Pro, and DaVinci Resolve all have their own limitations on the kinds of formats they are compatible with. Further, different web-platforms and hosting/streaming sites such as Vimeo have their own required formats as well. As such, it is important to be able to re-wrap and transcode your files to meet the various specifications for playback, editing, and digital publication.
+One option when faced with such a message is to simply use another media player ([VLC](https://www.videolan.org/vlc/index.html), which is built with FFmpeg, is an excellent open-source alternative) but simply "using another software" may not always be a viable solution. Many popular video editors such as Adobe Premiere, Final Cut Pro, and DaVinci Resolve all have their own limitations on the kinds of formats they are compatible with. Further, different web-platforms and hosting/streaming sites such as Vimeo have [their own requirements as well.](https://vimeo.com/help/compression) As such, it is important to be able to re-wrap and transcode your files to meet the various specifications for playback, editing, and digital publication.
 
   **Note**: For a complete list of codecs and containers supported by your installation of FFmpeg, run `ffmpeg -codecs` and `ffmpeg -formats`, respectively, to see the list printed to your `stdout`.
 
@@ -146,7 +146,7 @@ In this example, we will begin with our `bigbuckbunny.webm` and write a new file
 * `-c:a aac` = copy the audio stream to the AAC codec
 * `bigbuckbunny.mp4` = specifies the output file. Note this is where the new container type is specified
 
-If you execute this command while in the same directory as `bigbuckbunny.webm`, you will see a new file called `bigbuckbunny.mp4` appear in the directory. You will also be able to play this new file with QuickTime. Notice that although there isn't any significant visible or audible difference between the `.mp4` and `.webm` versions of the file, running `ffprobe bigbuckbunny.mp4` yields different technical metadata. Often this technical metadata can be just as important to accessing and working with audiovisual files than anything we can see or hear.
+If you execute this command as it is written and in the same directory as `bigbuckbunny.webm`, you will see a new file called `bigbuckbunny.mp4` appear in the directory. You will also be able to play this new file with QuickTime. Notice that although there isn't any significant visible or audible difference between the `.mp4` and `.webm` versions of the file, running `ffprobe bigbuckbunny.mp4` yields different technical metadata. Often this technical metadata can be just as important to accessing and working with audiovisual files than anything we can see or hear.
 
 ## Demux Audio & Video (Separate audio and video streams into separate files)
 Now that we have a better understanding of streams, codecs, and containers, lets look at ways FFmpeg can help us work with these media components at a more granular level. One useful method is to "demux" the file into its constituent parts. "Demuxing" an audiovisual file simply means to separate its different components or tracks (for example, audio and video tracks) into their own files.
@@ -223,8 +223,14 @@ Note that with `ffplay` commands, you do not need indicate an `-i` flag or outpu
 
 So far, we have examined basic metadata, transformed files, parsed and edited files, and explored how to playback what we have created. In the last sections of this tutorial, we will explore some more advanced commands that extract and visualize audiovisual data.
 
-## Using FFprobe (Generate metadata reports)
+## Advanced FFprobe
+At the beginning of this tutorial, we used an `ffprobe` command to view our file's basic metadata printed to the `stdout`. In these next examples, we'll explore some of the more advanced features of `ffprobe` to both access and gather metadata in structured data (i.e. machine-readable) formats such as `.json` or `.xml`.
+
 `FFprobe` is a powerful tool for extracting metadata from audio-visual files. This information can be output into several structured data (machine-readable) formats including `.json` and `.xml` that can be used for computational analysis or simply to store important information about a file(s). This example will write a `.json` file containing the technical metadata of the input file:
+
+[http://zauberklang.ch/filmcolors/#/]
+[https://filmcolors.org/]
+[https://filmcolors.org/2018/03/08/vian/]
 
 `ffprobe -i input_file.ext -show_format -show_streams -print_format json > output_metadata_file.json`
 
@@ -243,10 +249,6 @@ For more information on this command, see Reto Kromer's [explanation](https://av
 [Data visualization](https://en.wikipedia.org/wiki/Data_visualization) is a concept familiar to digital humanists. For years, sound and video professionals have also relied on data visualization to work with audio-visual content. These types of visualizations include [vectorscopes](https://en.wikipedia.org/wiki/Vectorscope#Video) (to visualize video color information) and [waveform patterns](https://en.wikipedia.org/wiki/Waveform) (to visualize audio signal data). Although this kind of data visualization is not the kind traditionally created by DH scholarship, FFmpeg includes a number of tools and libraries that can be used to visualize sound and image information that can potentially expand the field and open new lines of critical inquiry.
 
 This section will provide commands for creating a few different types of visualizations with examples of the intended result. Additionally, these commands are more complex than the previous examples in this tutorial and provide further insight into creating complex options for FFmpeg commands.
-
-[http://zauberklang.ch/filmcolors/#/]
-[https://filmcolors.org/]
-[https://filmcolors.org/2018/03/08/vian/]
 
 ### Vectorscope (Video)
 To play a video accompanied by a vectorscope:
