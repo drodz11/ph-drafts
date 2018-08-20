@@ -254,7 +254,7 @@ In addition to broad, technical metadata, we can use `ffprobe` to extract quanti
 * `-i movie=bigbuckbunny.webm` = name of input file
 * `,signalstats` = specifies use of the `signalstats` filter
 * `-show_entries` = sets list of entries that will be shown in the report. These are specified by the next options
-* `frame=pkt_pts_time` = specifies showing each frame with its corresponding `pkt_pts_time`. Essentially, this creates a unique entry for each frame of video.
+* `frame=pkt_pts_time` = specifies showing each frame with its corresponding `pkt_pts_time`. This creates a unique entry for each frame of video.
 * `:frame_tags=lavfi.signalstats.SATAVG` = creates a tag for each frame that contains the average color saturation value
 * `:frame_tags=lavfi.signalstats.HUEAVG` = creates a tag for each frame that contains the average color hue value
 * `-print_format json` = specifies the format of the metadata report
