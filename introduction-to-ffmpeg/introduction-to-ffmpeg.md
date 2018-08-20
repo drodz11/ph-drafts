@@ -226,22 +226,20 @@ So far, we have examined basic metadata, transformed files, parsed and edited fi
 ## Advanced FFprobe
 At the beginning of this tutorial, we used an `ffprobe` command to view our file's basic metadata printed to the `stdout`. In these next examples, we'll explore some of the more advanced features of `ffprobe` to both access and gather metadata in structured data (i.e. machine-readable) formats such as `.json` or `.xml`.
 
-`FFprobe` is a powerful tool for extracting metadata from audio-visual files. This information can be output into several structured data (machine-readable) formats including `.json` and `.xml` that can be used for computational analysis or simply to store important information about a file(s). This example will write a `.json` file containing the technical metadata of the input file:
+This first command will write a `.json` file containing the technical metadata of our original `bigbuckbunny.webm` file:
 
 [http://zauberklang.ch/filmcolors/#/]
 [https://filmcolors.org/]
 [https://filmcolors.org/2018/03/08/vian/]
 
-`ffprobe -i input_file.ext -show_format -show_streams -print_format json > output_metadata_file.json`
+`ffprobe -i bigbuckbunny.webm -show_format -show_streams -print_format json > bbb_metadata_file.json`
 
 * `ffprobe` = starts the command
-* `-i input_file.ext` = path and name of input file
+* `-i bigbuckbunny.webm` = path and name of input file
 * `-show_format` = provides container information
 * `-show_streams` = provides codec information for all streams
 * `-print_format json` = specifies the format of the metadata report.
-* `> output_metadata_file.json` = writes a new `.json` file containing the metadata report to a specified filepath and name. The file extension should match the format specified by the `print_format` flag.
-  * Alternatively, you can write this command without `> output_metadata_file.json`
-  and the report will be printed to the `stdout`.
+* `> bbb_metadata_file.json` = writes a new `.json` file containing the metadata report to a specified filepath and name. The file extension should match the format specified by the `print_format` flag.
 
 For more information on this command, see Reto Kromer's [explanation](https://avpres.net/FFmpeg/probe_json.html)
 
