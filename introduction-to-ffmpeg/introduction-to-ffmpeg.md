@@ -224,24 +224,47 @@ Note that with `ffplay` commands, you do not need indicate an `-i` flag or outpu
 So far, we have examined basic metadata, transformed files, parsed and edited files, and explored how to playback what we have created. In the last sections of this tutorial, we will explore some more advanced commands that extract and visualize audiovisual data.
 
 ## Advanced FFprobe
-At the beginning of this tutorial, we used an `ffprobe` command to view our file's basic metadata printed to the `stdout`. In these next examples, we'll explore some of the more advanced features of `ffprobe` to both access and gather metadata in structured data (i.e. machine-readable) formats such as `.json` or `.xml`.
+At the beginning of this tutorial, we used an `ffprobe` command to view our file's basic metadata printed to the `stdout`. In these next examples, we'll explore some of the more advanced features of `ffprobe` to both access and gather metadata in structured data (i.e. machine-readable) formats such as `.json` or `.xml` in addition to other useful formats like `.csv`.
 
+### Basic Technical Metadata Report
 This first command will write a `.json` file containing the technical metadata of our original `bigbuckbunny.webm` file:
-
-[http://zauberklang.ch/filmcolors/#/]
-[https://filmcolors.org/]
-[https://filmcolors.org/2018/03/08/vian/]
 
 `ffprobe -i bigbuckbunny.webm -show_format -show_streams -print_format json > bbb_metadata_file.json`
 
 * `ffprobe` = starts the command
-* `-i bigbuckbunny.webm` = path and name of input file
+* `-i bigbuckbunny.webm` = specifies the input file
 * `-show_format` = provides container information
 * `-show_streams` = provides codec information for all streams
 * `-print_format json` = specifies the format of the metadata report.
-* `> bbb_metadata_file.json` = writes a new `.json` file containing the metadata report to a specified filepath and name. The file extension should match the format specified by the `print_format` flag.
+* `> bbb_metadata_file.json` = writes a new `.json` file containing the metadata report. The file extension should match the format specified by the `print_format` flag.
 
-For more information on this command, see Reto Kromer's [explanation](https://avpres.net/FFmpeg/probe_json.html)
+[SCREEN SHOT - JSON File]
+
+  For more information on this command, see Reto Kromer's [explanation](https://avpres.net/FFmpeg/probe_json.html)
+
+This metadata report contains important information about the technical composition of the file including what "hidden streams" (such as subtitle or commentary tracks) are included in addition to more granular information like [pixel aspect ratio](https://en.wikipedia.org/wiki/Pixel_aspect_ratio) (displayed in the `json` file as `sample_aspect_ratio`) which can have a significant effect on how your image renders in editing or digital publishing environments.
+
+### Extracting Color Metadata
+In addition to broad, technical metadata, we can use `ffprobe` to extract quantitative data about a file's streams (i.e. audio or video information). In this example, we are going to use the `signalstats` filter to create a `.json` report of average color [hue](https://en.wikipedia.org/wiki/Hue) and color [saturation](https://en.wikipedia.org/wiki/Colorfulness#Saturation) information, respectively, from the video stream of `bigbuckbunny.web`. The use of [digital tools to analyze color information](https://filmcolors.org/2018/03/08/vian/) in motion pictures is another emerging facet of DH scholarship that overlaps with traditional film studies. The [FilmColors](https://filmcolors.org/) project, in particular, at the University of Zurich, interrogates the critical intersection of film's "formal aesthetic features to [the] semantic, historical, and technological aspects" of its production, reception, and dissemination through the use of digital analysis and annotation tools (Flueckiger, 2017). Although there is no standardized method for this kind of investigation at the time of this writing, the `ffprobe` command offered here is a powerful tool for extracting such information for use in computational analysis:
+
+`ffprobe -f lavfi -i movie=bigbuckbunny.webm,signalstats -show_entries frame=pkt_pts_time:frame_tags=lavfi.signalstats.SATAVG:frame_tags=lavfi.signalstats.HUEAVG -print_format json > bbb_colorinfo.json`
+
+* `ffprobe` = starts the command
+* `-f lavfi` = specifies the [libavfilter](https://ffmpeg.org/ffmpeg-devices.html#lavfi) virtual input device as the chosen format. This is necessary when using the `signalstats` filter and many others in more complex FFmpeg commands.
+* `-i movie=bigbuckbunny.webm` = name of input file
+* `,signalstats` = specifies use of the `signalstats` filter
+* `-show_entries` = sets list of entries that will be shown in the report. These are specified by the next options
+* `frame=pkt_pts_time` = specifies showing each frame with its corresponding `pkt_pts_time`. Essentially, this creates a unique entry for each frame of video.
+* `:frame_tags=lavfi.signalstats.SATAVG` = creates a tag for each frame that contains the average color saturation value
+* `:frame_tags=lavfi.signalstats.HUEAVG` = creates a tag for each frame that contains the average color hue value
+* `-print_format json` = specifies the format of the metadata report
+* `> bbb_colorinfo.json` = writes a new `.json` file containing the metadata report. The file extension should match the format specified by the `print_format` flag.
+
+  **Note**: For more information about the `signalstats` filter and the various metrics that can be extracted from video streams, refer to the FFmpeg's [Filters Documentation](https://ffmpeg.org/ffmpeg-filters.html#signalstats-1).
+
+[SCREEN SHOT - JSON COLORS]
+
+This command provides an efficient way for extracting color metadata and rendering it into a structured data format. In the interest of space and scope of this introductory tutorial, we will move on to other kinds of data visualizations FFmpeg is capable of generating. However, if you were interested in investigating visualization with this dataset, you can adjust the command to output a `.csv` file and try the dataset with the Programming Historian tutorial [Visualizing Data with Bokeh and Pandas](https://programminghistorian.org/en/lessons/visualizing-with-bokeh) or other open-source, browser-based visualization tools such as [RAW Graphs](https://rawgraphs.io/).
 
 ## Visualize audio and video information (Create vectorscopes and waveforms)
 [Data visualization](https://en.wikipedia.org/wiki/Data_visualization) is a concept familiar to digital humanists. For years, sound and video professionals have also relied on data visualization to work with audio-visual content. These types of visualizations include [vectorscopes](https://en.wikipedia.org/wiki/Vectorscope#Video) (to visualize video color information) and [waveform patterns](https://en.wikipedia.org/wiki/Waveform) (to visualize audio signal data). Although this kind of data visualization is not the kind traditionally created by DH scholarship, FFmpeg includes a number of tools and libraries that can be used to visualize sound and image information that can potentially expand the field and open new lines of critical inquiry.
@@ -336,6 +359,8 @@ FFmpeg has a large and well-supported community of users across the globe. As su
 * Camlot, J. (2015) “Historicist Audio Forensics: The Archive of Voices as Repository of Material and Conceptual Artefacts.”19: Interdisciplinary Studies in the Long Nineteenth Century. 2015(21)
 
 * Champion, E. (2017) “Digital Humanities is text heavy, visualization light, and simulation poor,” Digital Scholarship in the Humanities 32(S1), i25-i32
+
+* Flueckiger, B. (2017). "A Digital Humanities Approach to Film Colors". The Moving Image, 17(2), 71-94.
 
 * Hockey, S. (2004) “The History of Humanities Computing,” A Companion to Digital Humanities, ed. Susan Schreibman, Ray Siemens, John Unsworth. Oxford: Blackwell
 
