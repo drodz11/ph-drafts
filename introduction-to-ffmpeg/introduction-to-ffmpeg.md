@@ -264,7 +264,7 @@ In addition to broad, technical metadata, we can use `ffprobe` to extract quanti
 
 [SCREEN SHOT - JSON COLORS]
 
-This command provides an efficient way for extracting color metadata and rendering it into a structured data format. In the interest of space and scope of this introductory tutorial, we will move on to other kinds of data visualizations FFmpeg is capable of generating. However, if you were interested in investigating visualization with this dataset, you can adjust the command to output a `.csv` file and try the dataset with the Programming Historian tutorial [Visualizing Data with Bokeh and Pandas](https://programminghistorian.org/en/lessons/visualizing-with-bokeh) or other open-source, browser-based visualization tools such as [RAW Graphs](https://rawgraphs.io/).
+This command provides an efficient way for extracting color metadata and rendering it into a structured data format. In the interest of space and scope of this introductory tutorial, we will explore other kinds of data visualizations that are native to FFmpeg. However, if you are interested in investigating visualization with this dataset, you can adjust the command to output a `.csv` file and try the dataset with the Programming Historian tutorial [Visualizing Data with Bokeh and Pandas](https://programminghistorian.org/en/lessons/visualizing-with-bokeh) or other open-source, browser-based visualization tools such as [RAW Graphs](https://rawgraphs.io/).
 
 ## Visualize audio and video information (Create vectorscopes and waveforms)
 [Data visualization](https://en.wikipedia.org/wiki/Data_visualization) is a concept familiar to digital humanists. For years, sound and video professionals have also relied on data visualization to work with audio-visual content. These types of visualizations include [vectorscopes](https://en.wikipedia.org/wiki/Vectorscope#Video) (to visualize video color information) and [waveform patterns](https://en.wikipedia.org/wiki/Waveform) (to visualize audio signal data). Although this kind of data visualization is not the kind traditionally created by DH scholarship, FFmpeg includes a number of tools and libraries that can be used to visualize sound and image information that can potentially expand the field and open new lines of critical inquiry.
@@ -332,13 +332,25 @@ marks will specify the parameters of the waveform's appearance and size.
 * `:mode=line,format=yuv420p[v]` = specifies what style of graph will be created in addition to the colorspace `yuv` and resolution `420p`
 * `"` = ends the filter-graph
 * `-map "[v]" -map 0:a` = maps the output of the filter-graph onto the output file
-* `-c:v libx264 -c:a copy` = encode output video with an H.264 codec; encode output
-audio with the same codec as the input file
+* `-c:v libx264 -c:a copy` = encode output video with an H.264 codec; encode output audio with the same codec as the input file
 * `output_file.ext` = path and name of output file.
 
 {% include figure.html filename="waveform-video.gif" caption="GIF representation of the video output of the above command" %}
 
-# Further Resources
+# Conclusion
+In this tutorial, we have learned:
+  * To install FFmpeg on different operating systems and how to access the framework in the web-browser
+  * The basic syntax and structure of FFmpeg commands
+  * To view basic technical metadata of an audiovisual file
+  * To transform an audiovisual file through transcoding and re-wrapping
+  * To parse and edit that audiovisual file by demuxing it and creating excerpts
+  * To playback audiovisual files using `ffplay`
+  * To generate different kinds of metadata using `ffprobe`
+  * To generate different kinds of audiovisual data visualizations using complex filters and syntax
+
+At a broader level, this tutorial aspires to provide an informed and enticing introduction to how audiovisual tools and methodologies can be incorporated in Digital Humanities projects and practices. With open and powerful tools like FFmpeg, there is vast potential for expanding the scope of the field to include more rich and complex types of media than ever before. 
+
+## Further Resources
 FFmpeg has a large and well-supported community of users across the globe. As such, there are many open-source and free resources for discovering new commands and techniques for working with audio-visual media. Please contact the author with any additions to this list, especially educational resources in Spanish for learning FFmpeg.
 
 * The Official [FFmpeg Documentation](https://www.ffmpeg.org/ffmpeg.html)
