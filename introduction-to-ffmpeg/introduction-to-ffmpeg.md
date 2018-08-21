@@ -348,7 +348,7 @@ In this tutorial, we have learned:
   * To generate different kinds of metadata using `ffprobe`
   * To generate different kinds of audiovisual data visualizations using complex filters and syntax
 
-At a broader level, this tutorial aspires to provide an informed and enticing introduction to how audiovisual tools and methodologies can be incorporated in Digital Humanities projects and practices. With open and powerful tools like FFmpeg, there is vast potential for expanding the scope of the field to include more rich and complex types of media than ever before. 
+At a broader level, this tutorial aspires to provide an informed and enticing introduction to how audiovisual tools and methodologies can be incorporated in Digital Humanities projects and practices. With open and powerful tools like FFmpeg, there is vast potential for expanding the scope of the field to include more rich and complex types of media and analysis than ever before.
 
 ## Further Resources
 FFmpeg has a large and well-supported community of users across the globe. As such, there are many open-source and free resources for discovering new commands and techniques for working with audio-visual media. Please contact the author with any additions to this list, especially educational resources in Spanish for learning FFmpeg.
