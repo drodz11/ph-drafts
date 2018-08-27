@@ -150,7 +150,9 @@ If you execute this command as it is written and in the same directory as `bigbu
 ## Demux Audio & Video (Separate audio and video streams into separate files)
 Now that we have a better understanding of streams, codecs, and containers, lets look at ways FFmpeg can help us work with these media components at a more granular level. One useful method is to "demux" the file into its constituent parts. "Demuxing" an audiovisual file simply means to separate its different components or tracks (for example, audio and video tracks) into their own files.
 
-This is useful if you are interested in examining these components discretely or performing some kind of specialized analysis. For example, historicist audio forensics is an emerging area of DH scholarship that utilizes digital tools like [Praat](https://en.wikipedia.org/wiki/Praat) and [Audacity](https://www.audacityteam.org/) to analyze archival recordings of human voices (Camlot, 2015). Other tools for audio analysis and annotation such as the [Variations Audio Timeliner](http://variations.sourceforge.net/vat/index.html) can also be employed for similar "close listening" applications. At the end of this section, you will have created "audio only" and "video only" versions of `bigbuckbunny.mp4` using FFmpeg's "demuxing" syntax.
+This is useful if you are interested in examining these components discretely or performing some kind of specialized analysis. For example, [historicist audio forensics](https://www.19.bbk.ac.uk/articles/10.16995/ntn.744/) is an emerging area of DH scholarship that utilizes digital tools like [Praat](https://en.wikipedia.org/wiki/Praat) and [Audacity](https://www.audacityteam.org/) to analyze archival recordings of human voices (Camlot, 2015). Other tools for audio analysis and annotation such as the [Variations Audio Timeliner](http://variations.sourceforge.net/vat/index.html) can also be employed for similar "close listening" applications. At the end of this section, you will have created "audio only" and "video only" versions of `bigbuckbunny.mp4` using FFmpeg's "demuxing" syntax.
+
+> **Note**: For more commands related to historicist audio forensics, see the final two examples in this tutorial.
 
 ### Extract Audio
 
@@ -261,10 +263,9 @@ In addition to broad, technical metadata, we can use `ffprobe` to extract quanti
 
 > **Note**: For more information about the `signalstats` filter and the various metrics that can be extracted from video streams, refer to the FFmpeg's [Filters Documentation](https://ffmpeg.org/ffmpeg-filters.html#signalstats-1).
 
-{% include figure.html filename="JSON_colorinfo.png" caption="Caption to image" %}
-[SCREEN SHOT - JSON COLORS]
+{% include figure.html filename="JSON_colorinfo.png" caption="The first five entries of the `.json` report created above" %}
 
-This command provides an efficient way for extracting color metadata and rendering it into a structured data format compatible with various visualization platforms and applications. In the interest of space and scope of this introductory tutorial, we will limit our current exploration to kinds of data visualizations that are native to FFmpeg. However, if you are interested in investigating visualization with the color metadata set with have just created, you can adjust the command to output a `.csv` file and try the dataset with other open-source, browser-based visualization tools such as [RAW Graphs](https://rawgraphs.io/).
+This command provides an efficient way for extracting quantitative color metadata and rendering it into a structured data format compatible with various visualization platforms and applications. In the interest of space and scope of this introductory tutorial, we will limit our current exploration to kinds of data visualizations that are native to FFmpeg. However, if you are interested in investigating visualization with the color metadata set with have just created, you can adjust the command to output a `.csv` file and try the dataset with other open-source, browser-based visualization tools such as [RAW Graphs](https://rawgraphs.io/).
 
 ## Visualize Audio and Video Information (Create vectorscopes and waveforms)
 Data visualization is a concept familiar to digital humanists. For years, sound and video professionals have also relied on data visualization to work with audio-visual content. These types of visualizations include [vectorscopes](https://en.wikipedia.org/wiki/Vectorscope#Video) (to visualize video color information) and [waveform patterns](https://en.wikipedia.org/wiki/Waveform) (to visualize audio signal data). Although this kind of data visualization is not the kind traditionally created by DH scholarship, FFmpeg includes a number of tools and libraries that can be used to visualize sound and image information that can potentially expand the field and open new lines of critical inquiry.
@@ -272,12 +273,12 @@ Data visualization is a concept familiar to digital humanists. For years, sound 
 This section will provide commands for creating a few different types of visualizations with examples of the intended result. Additionally, these commands are more complex than the previous examples in this tutorial and provide further insight into creating complex options for FFmpeg commands.
 
 ### Vectorscope (Video)
-To play a video accompanied by a vectorscope:
+Our first example will build on our `ffplay bigbuckbunny.webm` command to include a vectorscope as part of the playback image. To play the video accompanied by a vectorscope:
 
-`ffplay input_file.ext -vf "split=2[m][v], [v]vectorscope=b=0.7:m=color3:g=green[v],[m][v]overlay=x=W-w:y=H-h"`
+`ffplay bigbuckbunny.webm -vf "split=2[m][v], [v]vectorscope=b=0.7:m=color3:g=green[v],[m][v]overlay=x=W-w:y=H-h"`
 
 * `ffplay` = starts the command
-* `input_file.ext` = path and name of input file
+* `bigbuckbunny.webm` = path and name of input file
 * `-vf` = creates a [filter-graph](https://trac.ffmpeg.org/wiki/FilteringGuide) to use for the streams
 * `"` = quotation mark to start the filter-graph. Information inside the quotation marks will specify the parameters of the vectorscope's appearance and position.
 * `split=2[m][v]` = splits the input into two identical outputs called `[m]` and `[v]`
@@ -286,26 +287,26 @@ To play a video accompanied by a vectorscope:
 * `[m][v]overlay=x=W-w:y=H-h` = overlays the vectorscope on top of the video image in a certain location (in this case, in the lower right corner of the frame)
 * `"` = ends the filter-graph
 
-{% include figure.html filename="vectorscope.png" caption="A sample video frame with a vectorscope" %}
+{% include figure.html filename="vector_bbb.png" caption="A sample video frame with a vectorscope" %}
 
 As previously discussed, this `ffplay` command will playback the video one time and then close the window. You can add a `-loop` option, but it is likely that you'll want to create a new file with the vectorscope included in the image for later analysis and investigation. To accomplish this, we need to change the command prompt to `ffmpeg` and specify the parameters of the output file. Our new command looks like this:
 
-`ffmpeg -i input_file.ext -vf "split=2[m][v], [v]vectorscope=b=0.7:m=color3:g=green[v],[m][v]overlay=x=W-w:y=H-h" -c:v libx264 -c:a copy output_file.ext`
+`ffmpeg -i bigbuckbunny.webm -vf "split=2[m][v], [v]vectorscope=b=0.7:m=color3:g=green[v],[m][v]overlay=x=W-w:y=H-h" -c:v libx264 -c:a copy bbb_vectorscope.mp4`
 
 Note the slight but important changes in syntax:
   * We have added an `-i` flag because it is an `ffmpeg` command
   * We have specified the output video codec as [H.264](https://en.wikipedia.org/wiki/H.264/MPEG-4_AVC) with the flag `-c:v libx264` and are not re-encoding the audio (`-c:a copy`), although you can specify another audio codec here if necessary.
-  * We have specified the path and name of the `output_file.ext`
+  * We have specified the path and name of the output file
 
 Generally, `ffplay` commands can be re-written as `ffmpeg` commands with similar tweaks to syntax, although commands containing more complex options may require more significant adjustments.
 
 ### Waveform (Audio)
-To create a single image of a single-channel (mono) waveform from an input file:
+Waveforms are one of the most common visualizations of sonic information. Most simply, a waveform expresses changes in an audio signal's [amplitude](https://en.wikipedia.org/wiki/Amplitude) over a given period of time. To create a single image of a single-channel (mono) waveform from an input file:
 
-`ffmpeg -i input_file.ext -filter_complex "aformat=channel_layouts=mono,showwavespic=s=600x240" -frames:v 1 output_file.ext`
+`ffmpeg -i bigbuckbunny.webm -filter_complex "aformat=channel_layouts=mono,showwavespic=s=600x240" -frames:v 1 bbb_waveimage.png`
 
 * `ffmpeg` = starts the command
-* `-i input_file.ext` = path and name of input file
+* `-i bigbuckbunny.webm` = path and name of input file
 * `-filter_complex` = creates a complex filter-graph
 * `"` = quotation mark to start the filter-graph. Information inside the quotation
 marks will specify the parameters of the waveform's appearance and size.
@@ -314,17 +315,17 @@ marks will specify the parameters of the waveform's appearance and size.
 of the image to be 600 pixels wide and 240 pixels tall.
 * `"` = ends the filter-graph
 * `frames:v 1` = assigns the output to one single frame (one image)  
-* `output_file.ext` = path and name of output file. The extension should be an appropriate image format such as `.jpeg` or `.png`
+* `bbb_waveimage.png` = path and name of output file. The extension should be an appropriate image format such as `.jpeg` or `.png`
 
-{% include figure.html filename="waveform-image.png" caption="Waveform image output of the above command" %}
+{% include figure.html filename="bbb_waveimage.png" caption="Single-image output of the above command" %}
 
 #### To create a video waveform:
-This command will output a video file that displays the audio waveform in real-time:
+A static image of an audio signal can certainly be useful, but you may want to also output a video of the waveform as well. This can more dynamically and vividly visualize how an audio signal changes in real-time:
 
-`ffmpeg -i input_file.ext -filter_complex "[0:a]showwaves=s=1280x720:mode=line,format=yuv420p[v]" -map "[v]" -map 0:a -c:v libx264 -c:a copy output_file.ext`
+`ffmpeg -i bigbuckbunny.webm -filter_complex "[0:a]showwaves=s=1280x720:mode=line,format=yuv420p[v]" -map "[v]" -map 0:a -c:v libx264 -c:a copy bbb_wavevideo.mp4`
 
 * `ffmpeg` = starts the command
-* `-i input_file.ext` = path and name of input file
+* `-i bigbuckbunny.webm` = path and name of input file
 * `-filter_complex` = creates a complex filter-graph
 * `"` = quotation mark to start the filter-graph. Information inside the quotation
 marks will specify the parameters of the waveform's appearance and size.
@@ -333,7 +334,7 @@ marks will specify the parameters of the waveform's appearance and size.
 * `"` = ends the filter-graph
 * `-map "[v]" -map 0:a` = maps the output of the filter-graph onto the output file
 * `-c:v libx264 -c:a copy` = encode output video with an H.264 codec; encode output audio with the same codec as the input file
-* `output_file.ext` = path and name of output file.
+* `bbb_wavevideo.mp4` = path and name of output file.
 
 {% include figure.html filename="waveform-video.gif" caption="GIF representation of the video output of the above command" %}
 
