@@ -118,7 +118,7 @@ Before we begin manipulating our `bigbuckbunny.webm` file, let's use FFmpeg to e
 
 You will see the file's basic metadata printed in the `stdout`:
 
-[SCREENSHOT - FFPROBE_BASIC]
+{% include figure.html filename="ffprobe_basic.png" caption="The output of a basic `ffprobe` command" %}
 
 The `Input #0` line identifies the **container** as [.webm](https://www.webmproject.org/about/), which is a variation of the [Matroska](https://www.matroska.org/) standard. Containers (also called "wrappers") are synonymous with the file's extension and provide the file with structure for its various streams. Different containers (other common ones include `.mov`, `.mp4`, and `.avi`) have different features and compatibilities with various software. We will examine how and why you might want to change a file's container in the next command.
 
@@ -129,7 +129,7 @@ Now that we know more about the technical make-up of our file, we can begin expl
 ## Changing Containers and Codecs (Re-Wrap and Transcode)
 Depending on your operating system, you may have one or more media players installed. For the purposes of demonstration, let's see what happens if you try to open `bigbuckbunny.webm` using the QuickTime media player that comes with Mac OSX:
 
-[SCREEN SHOT - QUICKTIME ERROR]
+{% include figure.html filename="QT_error.png" caption="Proprietary media players such as QuickTime are often limited in the kinds of files they can work with" %}
 
 One option when faced with such a message is to simply use another media player ([VLC](https://www.videolan.org/vlc/index.html), which is built with FFmpeg, is an excellent open-source alternative) but simply "using another software" may not always be a viable solution. Many popular video editors such as Adobe Premiere, Final Cut Pro, and DaVinci Resolve all have their own limitations on the kinds of formats they are compatible with. Further, different web-platforms and hosting/streaming sites such as Vimeo have [their own requirements as well.](https://vimeo.com/help/compression) As such, it is important to be able to re-wrap and transcode your files to meet the various specifications for playback, editing, and digital publication.
 
@@ -237,7 +237,7 @@ This first command will write a `.json` file containing the technical metadata o
 * `-print_format json` = specifies the format of the metadata report.
 * `> bbb_metadata_file.json` = writes a new `.json` file containing the metadata report. The file extension should match the format specified by the `print_format` flag.
 
-[SCREEN SHOT - JSON File]
+{% include figure.html filename="JSON_basic.png" caption="The first several rows of the `.json` report we created" %}
 
   For more information on this command, see Reto Kromer's [explanation](https://avpres.net/FFmpeg/probe_json.html)
 
@@ -261,6 +261,7 @@ In addition to broad, technical metadata, we can use `ffprobe` to extract quanti
 
 > **Note**: For more information about the `signalstats` filter and the various metrics that can be extracted from video streams, refer to the FFmpeg's [Filters Documentation](https://ffmpeg.org/ffmpeg-filters.html#signalstats-1).
 
+{% include figure.html filename="JSON_colorinfo.png" caption="Caption to image" %}
 [SCREEN SHOT - JSON COLORS]
 
 This command provides an efficient way for extracting color metadata and rendering it into a structured data format compatible with various visualization platforms and applications. In the interest of space and scope of this introductory tutorial, we will limit our current exploration to kinds of data visualizations that are native to FFmpeg. However, if you are interested in investigating visualization with the color metadata set with have just created, you can adjust the command to output a `.csv` file and try the dataset with other open-source, browser-based visualization tools such as [RAW Graphs](https://rawgraphs.io/).
