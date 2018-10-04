@@ -201,16 +201,52 @@ and/or
 
 `ffplay destEarth_Earth_video.mp4`
 
-You will see a window open and the video will begin at the specified start point, play through once, and then close. You should also notice that the videos created with the last two commands do not have a soundtrack.
+You will see a window open and the video will begin at the specified start point, play through once, and then close (in addition to there being no sound in your video). You will also notice that `ffplay` commands do not require an `-i` or an output to be specified because the playback itself is the output.
 
   >**Note**:`FFplay` is a very versatile media player that comes with a number of [options](https://ffmpeg.org/ffplay.html#Options) for customizing playback. For example, adding `-loop 0` to the command will loop playback indefinitely.
 
 We have now created our two excerpts for analysis. In the next part of the tutorial, we will examine and extract color data from the video files and then use [plot.ly](https://plot.ly/#/) to create simple visualizations from this information.
 
 ## Color Data Analysis
-The use of [digital tools to analyze color information](https://filmcolors.org/2018/03/08/vian/) in motion pictures is another emerging facet of DH scholarship that overlaps with traditional film studies. The [FilmColors](https://filmcolors.org/) project, in particular, at the University of Zurich, interrogates the critical intersection of film's "formal aesthetic features to [the] semantic, historical, and technological aspects" of its production, reception, and dissemination through the use of digital analysis and annotation tools (Flueckiger, 2017). Although there is no standardized method for this kind of investigation at the time of this writing, the `ffprobe` command offered here is a powerful tool for extracting such quantitative information for use in computational analysis.
+The use of [digital tools to analyze color information](https://filmcolors.org/2018/03/08/vian/) in motion pictures is another emerging facet of DH scholarship that overlaps with traditional film studies. The [FilmColors](https://filmcolors.org/) project, in particular, at the University of Zurich, interrogates the critical intersection of film's "formal aesthetic features to [the] semantic, historical, and technological aspects" of its production, reception, and dissemination through the use of digital analysis and annotation tools (Flueckiger, 2017). Although there is no standardized method for this kind of investigation at the time of this writing, the `ffprobe` command offered below is a powerful tool for extracting such quantitative information for use in computational analysis. First, let's look at another standardized way of representing color information that informs this quantative, data-driven approach to color analysis.
 
 ### Vectorscopes
+For years, video professionals have relied on [vectorscopes](https://en.wikipedia.org/wiki/Vectorscope#Video) to view color information in a standardized and easily legible way. A vectorscope plots color information on a circular graticle, and the position of a given plot corresponds to the particular [hues](https://en.wikipedia.org/wiki/Hue) found in a video signal. Other factors, like saturation, determine the size of a given plot as well. Below is an example of a vectorscope displaying the color values of SMPTE Bars, which are also pictured.
+
+{Image - Vectorscope} {Image - SMPTE Bars}
+
+FFmpeg can be used to playback and create video files with vectorscopes embedded in them so as to provide a real-time reference for the video's color information. The following `ffplay` commands will embed a vectorscope in the lower-right corner of the frame. As the video plays, you will notice the vectorscope plot shift as the on-screen color shifts:
+
+`ffplay destEarth_Mars_video.mp4 -vf "split=2[m][v], [v]vectorscope=b=0.7:m=color3:g=green[v],[m][v]overlay=x=W-w:y=H-h"``
+
+* `ffplay` = starts the command
+* `destEarth_Mars_video.mp4` = path and name of input file
+* `-vf` = creates a [filter-graph](https://trac.ffmpeg.org/wiki/FilteringGuide) to use for the streams
+* `"` = quotation mark to start the filter-graph. Information inside the quotation marks will specify the parameters of the vectorscope's appearance and position.
+* `split=2[m][v]` = splits the input into two identical outputs called `[m]` and `[v]`
+* `,` = comma signifies another parameter is coming
+* `[v]vectorscope=b=0.7:m=color3:g=green[v]` = assigns the `[v]` output the vectorscope filter
+* `[m][v]overlay=x=W-w:y=H-h` = overlays the vectorscope on top of the video image in a certain location (in this case, in the lower right corner of the frame)
+* `"` = ends the filter-graph
+
+And for the "Earth" excerpt:
+
+`ffplay destEarth_Earth_video.mp4 -vf "split=2[m][v], [v]vectorscope=b=0.7:m=color3:g=green[v],[m][v]overlay=x=W-w:y=H-h"`
+
+{image - screenshot mars vectorscope}{image - screenshot earth vectorscope}
+
+We can also adjust this command to write new video files with vectorscopes as well:
+
+`ffmpeg -i destEarth_Mars.mp4 -vf "split=2[m][v], [v]vectorscope=b=0.7:m=color3:g=green[v],[m][v]overlay=x=W-w:y=H-h" -c:v libx264 destEarth_Mars_vectorscope.mp4`
+
+`ffmpeg -i destEarth_Earth.mp4 -vf "split=2[m][v], [v]vectorscope=b=0.7:m=color3:g=green[v],[m][v]overlay=x=W-w:y=H-h" -c:v libx264 -c:a copy destEarth_Earth_vectorscope.mp4`
+
+Note the slight but important changes in syntax:
+  * We have added an `-i` flag because it is an `ffmpeg` command
+  * We have specified the output video codec as [H.264](https://en.wikipedia.org/wiki/H.264/MPEG-4_AVC) with the flag `-c:v libx264` and have left out an option for audio. Although you can add `-c:a copy` to copy audio without re-encoding or specify another audio codec here if necessary.
+  * We have specified the path and name of the output file
+
+Take a few minutes to watch these videos with the vectorscopes embeded in them. Notice how dymanic (or not) the changes are between the "Mars" and "Earth" excerpts and how the color of the vectorscope's plot itself changes based on what region it is in. In our next commands, we will use `ffprobe` to quantify this visual representation of color values and create a tabular dataset for graphing with plot.ly.
 
 ### Color Data Extraction with FFprobe
 At the beginning of this tutorial, we used an `ffprobe` command to view our file's basic metadata printed to the `stdout`. In these next examples, we'll use `ffprobe` to extract color data from our video excerpts and output this information to `.csv` files. Within our `ffprobe` command, we are going to use the `signalstats` filter to create `.csv` reports of median color [hue](https://en.wikipedia.org/wiki/Hue) information for each frame in the video stream of `destEarth_Mars_video.mp4` and `destEarth_Earth_video.mp4`, respectively.
@@ -237,78 +273,9 @@ You should now have two `.csv` files in your directory. If you open these in a t
 
 {Image csv head}
 
-Going from left to right, the first two columns give us information about where we are in the video. The decimal numbers represent fractions of a second that also roughly correspond to the video's time-base of 30fps. As such, each row in our `.csv` corresponds to one frame of video. The third column carries a whole number between 0-360, and this value represents the median hue for that frame of video. This numerical data the underlying quantitative data of the vectorscope's visualization.
+Going from left to right, the first two columns give us information about where we are in the video. The decimal numbers represent fractions of a second that also roughly correspond to the video's time-base of 30fps. As such, each row in our `.csv` corresponds to one frame of video. The third column carries a whole number between 0-360, and this value represents the median hue for that frame of video. These numbers are the underlying quantitative data of the vectorscope's plot and corresponds to its position (in radians) on the ciruclar graticle. Referencing our vectorscope image from earlier, you can see that starting at the bottom of the circle (0 degrees) and moving left, "greens" are around 38 degrees, "yellows" at 99 degrees, "reds" at 161 degrees, "magentas" at 218 degrees, "blues" at 279 degrees, and "cyans" at 341 degrees. Once you understand these "ranges" of hue, you can get a good idea of what the median hue value for a given video frame is.
 
-## Visualize Audio and Video Information (Create vectorscopes and waveforms)
-Data visualization is a concept familiar to digital humanists. For years, sound and video professionals have also relied on data visualization to work with audio-visual content. These types of visualizations include [vectorscopes](https://en.wikipedia.org/wiki/Vectorscope#Video) (to visualize video color information) and [waveform patterns](https://en.wikipedia.org/wiki/Waveform) (to visualize audio signal data). Although this kind of data visualization is not the kind traditionally created by DH scholarship, FFmpeg includes a number of tools and libraries that can be used to visualize sound and image information that can potentially expand the field and open new lines of critical inquiry.
 
-This section will provide commands for creating a few different types of visualizations with examples of the intended result. Additionally, these commands are more complex than the previous examples in this tutorial and provide further insight into creating complex options for FFmpeg commands.
-
-### Vectorscope (Video)
-Our first example will build on our `ffplay bigbuckbunny.webm` command to include a vectorscope as part of the playback image. To play the video accompanied by a vectorscope:
-
-`ffplay bigbuckbunny.webm -vf "split=2[m][v], [v]vectorscope=b=0.7:m=color3:g=green[v],[m][v]overlay=x=W-w:y=H-h"`
-
-* `ffplay` = starts the command
-* `bigbuckbunny.webm` = path and name of input file
-* `-vf` = creates a [filter-graph](https://trac.ffmpeg.org/wiki/FilteringGuide) to use for the streams
-* `"` = quotation mark to start the filter-graph. Information inside the quotation marks will specify the parameters of the vectorscope's appearance and position.
-* `split=2[m][v]` = splits the input into two identical outputs called `[m]` and `[v]`
-* `,` = comma signifies another parameter is coming
-* `[v]vectorscope=b=0.7:m=color3:g=green[v]` = assigns the `[v]` output the vectorscope filter
-* `[m][v]overlay=x=W-w:y=H-h` = overlays the vectorscope on top of the video image in a certain location (in this case, in the lower right corner of the frame)
-* `"` = ends the filter-graph
-
-{% include figure.html filename="vector_bbb.png" caption="A sample video frame with a vectorscope" %}
-
-As previously discussed, this `ffplay` command will playback the video one time and then close the window. You can add a `-loop` option, but it is likely that you'll want to create a new file with the vectorscope included in the image for later analysis and investigation. To accomplish this, we need to change the command prompt to `ffmpeg` and specify the parameters of the output file. Our new command looks like this:
-
-`ffmpeg -i bigbuckbunny.webm -vf "split=2[m][v], [v]vectorscope=b=0.7:m=color3:g=green[v],[m][v]overlay=x=W-w:y=H-h" -c:v libx264 -c:a copy bbb_vectorscope.mp4`
-
-Note the slight but important changes in syntax:
-  * We have added an `-i` flag because it is an `ffmpeg` command
-  * We have specified the output video codec as [H.264](https://en.wikipedia.org/wiki/H.264/MPEG-4_AVC) with the flag `-c:v libx264` and are not re-encoding the audio (`-c:a copy`), although you can specify another audio codec here if necessary.
-  * We have specified the path and name of the output file
-
-Generally, `ffplay` commands can be re-written as `ffmpeg` commands with similar tweaks to syntax, although commands containing more complex options may require more significant adjustments.
-
-### Waveform (Audio)
-Waveforms are one of the most common visualizations of sonic information. Most simply, a waveform expresses changes in an audio signal's [amplitude](https://en.wikipedia.org/wiki/Amplitude) over a given period of time. To create a single image of a single-channel (mono) waveform from an input file:
-
-`ffmpeg -i bigbuckbunny.webm -filter_complex "aformat=channel_layouts=mono,showwavespic=s=600x240" -frames:v 1 bbb_waveimage.png`
-
-* `ffmpeg` = starts the command
-* `-i bigbuckbunny.webm` = path and name of input file
-* `-filter_complex` = creates a complex filter-graph
-* `"` = quotation mark to start the filter-graph. Information inside the quotation
-marks will specify the parameters of the waveform's appearance and size.
-* `aformat=channel_layouts=mono` = sets the waveform to represent the audio information as a single-channel (mono)
-* `showwavespic=s=600x240` = activates the `showwavespic` filter; `s=600x240` designates the size
-of the image to be 600 pixels wide and 240 pixels tall.
-* `"` = ends the filter-graph
-* `frames:v 1` = assigns the output to one single frame (one image)  
-* `bbb_waveimage.png` = path and name of output file. The extension should be an appropriate image format such as `.jpeg` or `.png`
-
-{% include figure.html filename="bbb_waveimage.png" caption="Single-image output of the above command" %}
-
-#### To create a video waveform:
-A static image of an audio signal can certainly be useful, but you may want to also output a video of the waveform as well. This can more dynamically and vividly visualize how an audio signal changes in real-time:
-
-`ffmpeg -i bigbuckbunny.webm -filter_complex "[0:a]showwaves=s=1280x720:mode=line,format=yuv420p[v]" -map "[v]" -map 0:a -c:v libx264 -c:a copy bbb_wavevideo.mp4`
-
-* `ffmpeg` = starts the command
-* `-i bigbuckbunny.webm` = path and name of input file
-* `-filter_complex` = creates a complex filter-graph
-* `"` = quotation mark to start the filter-graph. Information inside the quotation
-marks will specify the parameters of the waveform's appearance and size.
-* `[0:a]showwaves=s=1280x720` = activates the `showwaves` filter and sets it to a certain size. This will be the size of the output video.
-* `:mode=line,format=yuv420p[v]` = specifies what style of graph will be created in addition to the colorspace `yuv` and resolution `420p`
-* `"` = ends the filter-graph
-* `-map "[v]" -map 0:a` = maps the output of the filter-graph onto the output file
-* `-c:v libx264 -c:a copy` = encode output video with an H.264 codec; encode output audio with the same codec as the input file
-* `bbb_wavevideo.mp4` = path and name of output file.
-
-{% include figure.html filename="waveform-video.gif" caption="GIF representation of the video output of the above command" %}
 
 # Conclusion
 In this tutorial, we have learned:
