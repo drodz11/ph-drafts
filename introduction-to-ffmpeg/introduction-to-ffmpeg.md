@@ -1,6 +1,6 @@
 ---
 title: |
-    Introduction to Audiovisual Transcoding, Editing, and Analysis with FFmpeg
+    Introduction to Audiovisual Transcoding, Editing, and Color Analysis with FFmpeg
 authors:
 - David Rodriguez
 date: 2018-08-03
@@ -107,7 +107,7 @@ Written generically, a basic FFmpeg command looks like this:
 Next, we will look at some examples of several different commands that use this structure and syntax. These commands will also demonstrate some of FFmpeg's most basic, useful functions and allow us to become more familiar with how digital audiovisual files are constructed.
 
 # Getting Started
-For this tutorial, we will be taking an archival film called *[Destination Earth]*(https://archive.org/details/4050_Destination_Earth_01_47_33_28) as our object of study. This film has been made available by the [Prelinger Archives](https://en.wikipedia.org/wiki/Prelinger_Archives) collection on the [Internet Archive](https://archive.org/). Released in 1956, this film is a prime example of pro-capitalist, Cold War-era propaganda produced by the [American Petroleum Institute](https://en.wikipedia.org/wiki/American_Petroleum_Institute) and [John Sutherland Productions](https://en.wikipedia.org/wiki/John_Sutherland_(producer). Utilizing the [Technicolor](https://en.wikipedia.org/wiki/Technicolor) process, this science-fiction animated short tells a story of a Martian society living under an oppressive, Communist-like government and their efforts to improve their industrial methods. They send an emissary to Earth who discovers the key to this is oil refining and free-enterprise. We will be using this video to introduce some of the basic functionalities of FFmpeg and analyzing its color properties in relation to its propagandist rhetoric.
+For this tutorial, we will be taking an archival film called [*Destination Earth*](https://archive.org/details/4050_Destination_Earth_01_47_33_28) as our object of study. This film has been made available by the [Prelinger Archives](https://en.wikipedia.org/wiki/Prelinger_Archives) collection on the [Internet Archive](https://archive.org/). Released in 1956, this film is a prime example of pro-capitalist, Cold War-era propaganda produced by the [American Petroleum Institute](https://en.wikipedia.org/wiki/American_Petroleum_Institute) and [John Sutherland Productions](https://en.wikipedia.org/wiki/John_Sutherland_(producer). Utilizing the [Technicolor](https://en.wikipedia.org/wiki/Technicolor) process, this science-fiction animated short tells a story of a Martian society living under an oppressive, Communist-like government and their efforts to improve their industrial methods. They send an emissary to Earth who discovers the key to this is oil refining and free-enterprise. We will be using this video to introduce some of the basic functionalities of FFmpeg and analyzing its color properties in relation to its propagandist rhetoric.
 
 {Image - Destination Earth title card}
 
@@ -154,7 +154,7 @@ Depending on your operating system, you may have one or more media players insta
 
 {% include figure.html filename="QT_fail.png" caption="Proprietary media players such as QuickTime are often limited in the kinds of files they can work with" %}
 
-One option when faced with such a message is to simply use another media player. [VLC](https://www.videolan.org/vlc/index.html), which is built with FFmpeg, is an excellent open-source alternative) but simply "using another software" may not always be a viable solution (and you may not always have another version of a file to work with, either). Many popular video editors such as Adobe Premiere, Final Cut Pro, and DaVinci Resolve all have their own limitations on the kinds of formats they are compatible with. Further, different web-platforms and hosting/streaming sites such as Vimeo have [their own requirements as well.](https://vimeo.com/help/compression) As such, it is important to be able to re-wrap and transcode your files to meet the various specifications for playback, editing, and digital publication.
+One option when faced with such a message is to simply use another media player. [VLC](https://www.videolan.org/vlc/index.html), which is built with FFmpeg, is an excellent open-source alternative, but simply "using another software" may not always be a viable solution (and you may not always have another version of a file to work with, either). Many popular video editors such as Adobe Premiere, Final Cut Pro, and DaVinci Resolve all have their own limitations on the kinds of formats they are compatible with. Further, different web-platforms and hosting/streaming sites such as Vimeo have [their own requirements as well.](https://vimeo.com/help/compression) As such, it is important to be able to re-wrap and transcode your files to meet the various specifications for playback, editing, and digital publication.
 
 > **Note**: For a complete list of codecs and containers supported by your installation of FFmpeg, run `ffmpeg -codecs` and `ffmpeg -formats`, respectively, to see the list printed to your `stdout`.
 
@@ -177,14 +177,14 @@ Now that we have a better understanding of streams, codecs, and containers, lets
 * Second, the command will remove ("demux") the audio components (`Stream #0:1`) from these excerpts
   * We are removing the audio in the interest in promoting good practice in saving storage space (the audio information is not necessary for color analysis) and will likely be useful if you hope to this is kind of analysis at larger scales. More on how to do this near the end of the tutorial.
 
-The first excerpt we will be making is a sequence near the beginning of the film depicting the difficult conditions and downtrodden life of the Martian society. The following command specifies start and end points of the excerpts in addition to telling FFmpeg to retain all information in each stream without transcoding anything.
+The first excerpt we will be making is a sequence near the beginning of the film depicting the difficult conditions and downtrodden life of the Martian society. The following command specifies start and end points of the excerpts in addition to telling FFmpeg to retain all information in the video stream without transcoding anything.
 
 `ffmpeg -i destEarth.m4v -ss 00:01:00 -to 00:04:35 -c:v copy -an destEarth_Mars_video.mp4`
 
 * `ffmpeg` = starts the command
 * `-i destEarth.m4v` = specifies the input file
 * `-ss 00:01:00` = sets start point at 1 minute from start of file
-* `-to 00:04:45` = sets end point to 4 minutes and 35 seconds from start of file
+* `-to 00:04:45` = sets end point to 4 minutes and 45 seconds from start of file
 * `-c:v copy` = copy the video stream directly, without re-encoding
 * `-an` = tells FFmpeg to ignore audio stream when writing the output file.
 * `destEarth_Mars.mp4` = specifies the output file
@@ -208,7 +208,7 @@ You will see a window open and the video will begin at the specified start point
 We have now created our two excerpts for analysis. In the next part of the tutorial, we will examine and extract color data from the video files and then use [plot.ly](https://plot.ly/#/) to create simple visualizations from this information.
 
 ## Color Data Analysis
-The use of [digital tools to analyze color information](https://filmcolors.org/2018/03/08/vian/) in motion pictures is another emerging facet of DH scholarship that overlaps with traditional film studies. The [FilmColors](https://filmcolors.org/) project, in particular, at the University of Zurich, interrogates the critical intersection of film's "formal aesthetic features to [the] semantic, historical, and technological aspects" of its production, reception, and dissemination through the use of digital analysis and annotation tools (Flueckiger, 2017). Although there is no standardized method for this kind of investigation at the time of this writing, the `ffprobe` command offered below is a powerful tool for extracting such quantitative information for use in computational analysis. First, let's look at another standardized way of representing color information that informs this quantative, data-driven approach to color analysis.
+The use of [digital tools to analyze color information](https://filmcolors.org/2018/03/08/vian/) in motion pictures is another emerging facet of DH scholarship that overlaps with traditional film studies. The [FilmColors](https://filmcolors.org/) project, in particular, at the University of Zurich, interrogates the critical intersection of film's "formal aesthetic features to [the] semantic, historical, and technological aspects" of its production, reception, and dissemination through the use of digital analysis and annotation tools (Flueckiger, 2017). Although there is no standardized method for this kind of investigation at the time of this writing, the `ffprobe` command offered below is a powerful tool for extracting such quantitative information for use in computational analysis. First, let's look at another standardized way of representing color information that informs this quantatative, data-driven approach to color analysis.
 
 ### Vectorscopes
 For years, video professionals have relied on [vectorscopes](https://en.wikipedia.org/wiki/Vectorscope#Video) to view color information in a standardized and easily legible way. A vectorscope plots color information on a circular graticle, and the position of a given plot corresponds to the particular [hues](https://en.wikipedia.org/wiki/Hue) found in a video signal. Other factors, like saturation, determine the size of a given plot as well. Below is an example of a vectorscope displaying the color values of SMPTE Bars, which are also pictured.
@@ -237,14 +237,16 @@ And for the "Earth" excerpt:
 
 We can also adjust this command to write new video files with vectorscopes as well:
 
-`ffmpeg -i destEarth_Mars.mp4 -vf "split=2[m][v], [v]vectorscope=b=0.7:m=color3:g=green[v],[m][v]overlay=x=W-w:y=H-h" -c:v libx264 destEarth_Mars_vectorscope.mp4`
+`ffmpeg -i destEarth_Mars_video.mp4 -vf "split=2[m][v], [v]vectorscope=b=0.7:m=color3:g=green[v],[m][v]overlay=x=W-w:y=H-h" -c:v libx264 destEarth_Mars_vectorscope.mp4`
 
-`ffmpeg -i destEarth_Earth.mp4 -vf "split=2[m][v], [v]vectorscope=b=0.7:m=color3:g=green[v],[m][v]overlay=x=W-w:y=H-h" -c:v libx264 -c:a copy destEarth_Earth_vectorscope.mp4`
+`ffmpeg -i destEarth_Earth_video.mp4 -vf "split=2[m][v], [v]vectorscope=b=0.7:m=color3:g=green[v],[m][v]overlay=x=W-w:y=H-h" -c:v libx264 -c:a copy destEarth_Earth_vectorscope.mp4`
 
 Note the slight but important changes in syntax:
   * We have added an `-i` flag because it is an `ffmpeg` command
   * We have specified the output video codec as [H.264](https://en.wikipedia.org/wiki/H.264/MPEG-4_AVC) with the flag `-c:v libx264` and have left out an option for audio. Although you can add `-c:a copy` to copy audio without re-encoding or specify another audio codec here if necessary.
   * We have specified the path and name of the output file
+
+{image - Mars_screenshot_vector} {image - Earth_screenshot_vector}
 
 Take a few minutes to watch these videos with the vectorscopes embeded in them. Notice how dymanic (or not) the changes are between the "Mars" and "Earth" excerpts and how the color of the vectorscope's plot itself changes based on what region it is in. In our next commands, we will use `ffprobe` to quantify this visual representation of color values and create a tabular dataset for graphing with plot.ly.
 
@@ -273,11 +275,53 @@ You should now have two `.csv` files in your directory. If you open these in a t
 
 {Image csv head}
 
-Going from left to right, the first two columns give us information about where we are in the video. The decimal numbers represent fractions of a second that also roughly correspond to the video's time-base of 30fps. As such, each row in our `.csv` corresponds to one frame of video. The third column carries a whole number between 0-360, and this value represents the median hue for that frame of video. These numbers are the underlying quantitative data of the vectorscope's plot and corresponds to its position (in radians) on the ciruclar graticle. Referencing our vectorscope image from earlier, you can see that starting at the bottom of the circle (0 degrees) and moving left, "greens" are around 38 degrees, "yellows" at 99 degrees, "reds" at 161 degrees, "magentas" at 218 degrees, "blues" at 279 degrees, and "cyans" at 341 degrees. Once you understand these "ranges" of hue, you can get a good idea of what the median hue value for a given video frame is.
+Going from left to right, the first two columns give us information about where we are in the video. The decimal numbers represent fractions of a second that also roughly correspond to the video's time-base of 30fps. As such, each row in our `.csv` corresponds to one frame of video. The third column carries a whole number between 0-360, and this value represents the median hue for that frame of video. These numbers are the underlying quantitative data of the vectorscope's plot and corresponds to its position (in radians) on the ciruclar graticle. Referencing our vectorscope image from earlier, you can see that starting at the bottom of the circle (0 degrees) and moving left, "greens" are around 38 degrees, "yellows" at 99 degrees, "reds" at 161 degrees, "magentas" at 218 degrees, "blues" at 279 degrees, and "cyans" at 341 degrees. Once you understand these "ranges" of hue, you can get an idea of what the median hue value for a given video frame is just by looking at this numerical value.
+
+### Graphing with plot.ly
+We will use the brower-based service [plot.ly](https://plot.ly/#/) to create graphs which visualize the variant color information of our two excerpts. In order to do follow along with the rest of the tutorial, you will have to sign up for a plot.ly account. If you do not wish to register with them, you will still be able to see the end visualization by scrolling down.
+
+To register, go the plot.ly website and click "Sign Up" in the upper right corner of the screen. Follow the simple instructions (you will be required to confirm via email) and then once you are logged in we can begin uploading our data.
+
+Once registered and logged in, click the "Create" button in the upper right corner of the screen. In the drop-down menu, select "Chart."
+
+{image - plot_1}
+
+One the next screen, you'll find a blank graph page. In the upper right, click the "Import" button, and either drag-and-drop or upload `destEarth_Mars_hue.csv`.
+
+{image - plot_2}
+
+Once your first .csv is uploaded, you'll see it appear as "Grid 2" (Grid 1 remains blank). One the left side of the screen, adjust the graph parameters to the following:
+* The "Type" option to "Line"
+* The "X" option to "Grid 2: 0.059977"
+* The "Y" option to "Grid 2: 147"
+Your page should now look like the image below:
+
+{image - plot_3}
+
+Upload the `destEarth_Earth_hue.csv` by clicking the "Import" button again (the data will appear as "Grid 3"). Then click the "+ Trace" button on the left-side of the screen, this will create a new line on our graph labeled "trace 1". Adjust the trace 1 parameters to the following:
+* The "Type" option to "Line"
+* The "X" option to "Grid 3: 0.450033"
+* The "Y" option to "Grid 3: 116"
+
+You should now see a graph with two lines (traces) overalyed on top of each other. Note that you can re-name the traces by clicking their labels next to the graph itself, you can also add a title and labels to the X and Y axes:
+
+{image - plot_4}
+
+> **Note**: The reason the X axis renders to seconds instead of frames is because the graph is only displaying whole-numbers and not the decimals associated with pkt_pts_time. As such, these whole numbers along the X axis conform to seconds elapsed in the video
+
+In order to export your graph, you will have to save it to be viewed publicaly in plot.ly, but this is certainly not necessary for the purposes of this tutorial.
+
+### Conclusions
+From looking at the graph, we can see that the Mars and Earth traces have very different ranges in their median hue values. The Mars trace is very limited and keeps within the red and yellow ranges throughout the majority of the excerpt. Remember that this is the section of the film that depicts life under the Communist-like Martian society (complete with a large mustachioed dictator, and not to mention the political connotations of a "red planet"). As you can see in the values represented on the graph coupled with your own experience watching the excerpt, the drab and monochromatic color palette mirrors the bleak way of life under such a society.
+
+By comparison, the Earth trace has a much greater dynamic range of hue values. In this excerpt, our Martian emissary is learning about the wonderful and affluent lifestyle of Earthlings thanks to a capitalist system and exploitation of oil and petroleum products. The viewer is offered a vivid and variegated montage of colors characterizing a joyfully materialist and oil-driven society. This disparity in dynamic range provides a quantitative measure for linking the technical and aesthetic use of color in this animated film with the propagandist rhetoric put forth by its producers.     
+
+{image - lovely_oil} {image - Mars_screenshot}
+
+Limitations.
 
 
-
-# Conclusion
+# Wrap Up
 In this tutorial, we have learned:
   * To install FFmpeg on different operating systems and how to access the framework in the web-browser
   * The basic syntax and structure of FFmpeg commands
@@ -285,8 +329,9 @@ In this tutorial, we have learned:
   * To transform an audiovisual file through transcoding and re-wrapping
   * To parse and edit that audiovisual file by demuxing it and creating excerpts
   * To playback audiovisual files using `ffplay`
-  * To generate different kinds of metadata using `ffprobe`
-  * To generate different kinds of audiovisual data visualizations using complex filters and syntax
+  * To create new video files with embedded vectorscopes
+  * To export tabular data related to color from a video stream using `ffprobe`
+  * To generate a data visualization of this tabular data using plot.ly
 
 At a broader level, this tutorial aspires to provide an informed and enticing introduction to how audiovisual tools and methodologies can be incorporated in Digital Humanities projects and practices. With open and powerful tools like FFmpeg, there is vast potential for expanding the scope of the field to include more rich and complex types of media and analysis than ever before.
 
